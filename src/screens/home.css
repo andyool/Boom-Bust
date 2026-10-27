@@ -1,0 +1,24 @@
+.home {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  overflow: hidden;
+}
+.home__bg {
+  position: absolute;
+  inset: 62% auto auto 50%;
+  width: max(110%, 110vh);
+  transform: translate(-50%, -50%);
+  opacity: 0.22;
+  pointer-events: none;
+}
+.home__logo { position: relative; width: min(640px, 70vw); border-radius: 22px; border: 4px solid var(--navy); box-shadow: 0 8px 0 rgba(3, 40, 78, 0.3); }
+.home__buttons { position: relative; display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+.home__buttons .btn { min-width: 300px; }
+.home__tokens { display: inline-flex; gap: 4px; margin-left: 6px; }
+.home__confirm { display: flex; justify-content: center; align-items: center; gap: 14px; padding: 24px; position: relative; }
+.home__confirm-x { font: 700 64px/1 'Poppins', sans-serif; color: var(--coral); margin-left: 18px; }

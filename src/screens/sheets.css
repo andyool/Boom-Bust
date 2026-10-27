@@ -1,0 +1,43 @@
+/* Tile sheet */
+.tsheet { display: flex; align-items: center; justify-content: center; gap: 28px; min-height: 420px; }
+.tsheet__tile { height: 440px; width: auto; border-radius: 10px; box-shadow: 0 0 0 3px var(--navy); }
+.tsheet__tile--corner { height: 400px; }
+.tsheet__deed { height: 440px; width: auto; border-radius: 14px; box-shadow: 0 6px 0 rgba(3, 40, 78, 0.25); }
+.tsheet__owner { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 180px; }
+.tsheet__name { font: 700 28px 'Poppins', sans-serif; }
+.tsheet__sites { display: flex; gap: 6px; }
+.tsheet__sites img { width: 48px; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.tsheet__price { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.tsheet__clip {
+  font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; background: var(--purple); color: #fff;
+  padding: 4px 12px; border-radius: 999px;
+}
+.tsheet__bank { width: 110px; border-radius: 14px; }
+
+/* Player chips (side panel rows) */
+.pchips { display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; overflow: hidden; }
+.pchips__job { height: 30px; width: auto; border-radius: 3px; box-shadow: 0 0 0 1px var(--navy); }
+.pchips__study { font-size: 18px; margin-left: -6px; }
+.pchips__keep { height: 30px; width: auto; border-radius: 3px; }
+
+/* Player sheet */
+.psheet__title { display: inline-flex; align-items: center; gap: 16px; text-transform: none; }
+.psheet { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; }
+.psheet__job { position: relative; }
+.psheet__job img { height: 380px; width: auto; border-radius: 14px; }
+.psheet__study { position: absolute; right: -14px; bottom: -14px; display: flex; gap: 4px; }
+.psheet__study img { height: 64px; width: 64px; border-radius: 50%; box-shadow: 0 0 0 3px var(--navy); }
+.psheet__side { display: flex; flex-direction: column; gap: 18px; }
+.psheet__stats { display: flex; flex-wrap: wrap; gap: 12px; }
+.stat {
+  display: grid; grid-template-columns: 56px auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center;
+  padding: 8px 14px; border: 2px solid var(--navy); border-radius: var(--radius); background: #fffaf0;
+}
+.stat img { width: 56px; border-radius: 8px; grid-row: span 2; }
+.stat__label { font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; opacity: 0.7; }
+.psheet__n { font-size: 34px; }
+.psheet__deeds { display: flex; flex-wrap: wrap; gap: 12px; }
+.psheet__deed { position: relative; }
+.psheet__deed img { height: 170px; width: auto; border-radius: 8px; }
+.psheet__sites { position: absolute; right: -8px; top: -8px; display: flex; gap: 2px; }
+.psheet__sites img { height: 34px; width: 34px; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }

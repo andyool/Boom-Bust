@@ -139,7 +139,7 @@ export interface Game {
   supplyDeals: SupplyDeal[];
   flags: { noNewLoans: boolean; rbaMode: boolean; lastRound: boolean };
   record: RecordRow[];
-  settings: { noteHelper: boolean; endPaydays: number; timerMinutes?: number };
+  settings: { noteHelper: boolean; endPaydays: number; timerMinutes?: number }; // endPaydays 0: the game ends by timer only
   phase: Phase;
   seq: number; // increases with every law passed; used for passedAt
   finalCash: Record<string, number>; // end game: counted cash per player

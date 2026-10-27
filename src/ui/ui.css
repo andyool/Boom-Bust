@@ -1,0 +1,151 @@
+/* Shared UI kit: chunky board-game buttons, money, notes, sheets, chips. */
+
+img { display: block; max-width: 100%; }
+
+.num { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  --bg: var(--navy);
+  --fg: var(--cream);
+  min-height: var(--touch);
+  min-width: var(--touch);
+  padding: 8px 20px;
+  border: 3px solid var(--navy);
+  border-radius: 16px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 700 20px/1 'Poppins', system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 5px 0 var(--navy);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 80ms ease, box-shadow 80ms ease, opacity 120ms;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--navy); }
+.btn:disabled { opacity: 0.38; cursor: default; }
+.btn:focus-visible { outline: 4px solid var(--mustard); outline-offset: 3px; }
+.btn--teal { --bg: var(--teal); --fg: #fff; }
+.btn--coral { --bg: var(--coral); --fg: #fff; }
+.btn--mustard { --bg: var(--mustard); --fg: var(--navy); }
+.btn--green { --bg: var(--green); --fg: #fff; }
+.btn--purple { --bg: var(--purple); --fg: #fff; }
+.btn--ghost { --bg: var(--cream); --fg: var(--navy); }
+.btn--big { min-height: 84px; font-size: 34px; border-radius: 22px; padding: 10px 32px; }
+.btn--wide { width: 100%; }
+.btn img { height: 34px; width: auto; }
+
+/* ---------- Money and notes ---------- */
+.money { font-size: 22px; white-space: nowrap; }
+.money--big { font-size: 36px; }
+.money--in { color: var(--green); }
+.money--out { color: var(--coral); }
+
+.notes { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.notes__item { display: inline-flex; align-items: center; gap: 3px; }
+.notes__item img { height: 30px; width: 60px; border-radius: 3px; box-shadow: 0 0 0 1.5px var(--navy); }
+.notes__item b { font-size: 18px; }
+
+/* ---------- Tokens and chips ---------- */
+.token {
+  display: inline-block;
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 0 0 2px var(--navy);
+}
+.token img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.12); }
+.token--current { box-shadow: 0 0 0 2px var(--navy), 0 0 0 6px var(--mustard); }
+
+.chip { display: inline-flex; align-items: center; gap: 4px; }
+.chip img { height: 28px; width: auto; border-radius: 4px; }
+.chip b { font-size: 17px; }
+
+/* ---------- Sheets ---------- */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(3, 40, 78, 0.55);
+  display: grid;
+  place-items: center;
+  padding: calc(var(--rim) + 10px);
+  animation: fade-in 160ms ease;
+}
+.sheet {
+  width: min(1080px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--cream);
+  border: 4px solid var(--navy);
+  border-radius: 22px;
+  box-shadow: 0 10px 0 rgba(3, 40, 78, 0.35);
+  overflow: hidden;
+  animation: rise-in 200ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+}
+.sheet--teal { border-color: var(--teal); }
+.sheet--purple { border-color: var(--purple); }
+.sheet__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-bottom: 3px solid var(--navy);
+  background: #fff8ea;
+}
+.sheet__icon { height: 56px; width: auto; border-radius: 8px; }
+.sheet__title { margin: 0; font-size: 30px; flex: 1; text-transform: uppercase; letter-spacing: 0.02em; }
+.sheet__close {
+  width: var(--touch);
+  height: var(--touch);
+  border-radius: 50%;
+  border: 3px solid var(--navy);
+  background: var(--cream);
+  color: var(--navy);
+  font: 700 24px/1 'Poppins', sans-serif;
+  cursor: pointer;
+}
+.sheet__body { padding: 18px; overflow: auto; flex: 1; -webkit-overflow-scrolling: touch; }
+.sheet__foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 14px 18px 18px;
+  border-top: 3px solid var(--navy);
+  background: #fff8ea;
+}
+
+.panel {
+  background: var(--cream);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 90;
+  background: var(--navy);
+  color: var(--cream);
+  font: 700 20px/1.2 'Poppins', sans-serif;
+  padding: 14px 24px;
+  border-radius: 16px;
+  box-shadow: 0 6px 0 rgba(3, 40, 78, 0.35);
+  animation: fade-in 180ms ease;
+}
+
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(14px) scale(0.98); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+}

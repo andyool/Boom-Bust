@@ -1,0 +1,79 @@
+.dash {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--w) * 0.22);
+  padding: calc(var(--w) * 0.5);
+}
+.dash__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.25; pointer-events: none; }
+.dash__panel {
+  position: relative;
+  background: rgba(250, 242, 224, 0.92);
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+  padding: calc(var(--w) * 0.14);
+}
+
+/* Economy track */
+.dash__econ { display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(var(--w) * 0.1); }
+.econ { border-radius: 10px; opacity: 0.4; filter: saturate(0.5); transition: all 300ms ease; }
+.econ img { width: 100%; border-radius: 10px; }
+.econ.is-on { opacity: 1; filter: none; transform: scale(1.1); box-shadow: 0 0 0 3px var(--navy), 0 0 0 7px var(--mustard); z-index: 1; }
+
+/* Level 2 tracks */
+.dash__tracks { display: flex; flex-direction: column; gap: calc(var(--w) * 0.08); border-color: var(--teal); }
+.track { display: grid; grid-template-columns: calc(var(--w) * 0.75) 1fr auto; align-items: center; gap: 10px; }
+.track__icon { width: 100%; border-radius: 6px; }
+.track__cells { display: grid; gap: 4px; }
+.track__cell {
+  display: grid;
+  place-items: center;
+  height: calc(var(--w) * 0.62);
+  border: 2px solid var(--navy);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 18px;
+  text-transform: uppercase;
+  opacity: 0.55;
+  transition: all 250ms;
+}
+.track__cell.is-on { opacity: 1; background: var(--teal); color: #fff; box-shadow: 0 0 0 3px var(--mustard); }
+.track__rba { font-size: 18px; color: var(--teal); }
+
+/* Treasury and laws */
+.dash__row { display: flex; gap: calc(var(--w) * 0.18); }
+.dash__treasury {
+  flex: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 6px;
+  border-color: var(--teal);
+  border-width: 3px;
+}
+.dash__icon { width: calc(var(--w) * 1.1); border-radius: 10px; grid-row: span 2; }
+.dash__money { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.dash__projects { display: flex; gap: 6px; }
+.dash__projects img { width: calc(var(--w) * 0.78); border-radius: 6px; opacity: 0.3; filter: grayscale(1); transition: all 400ms; }
+.dash__projects img.is-built { opacity: 1; filter: none; box-shadow: 0 0 0 2px var(--navy); }
+
+.dash__laws {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-color: var(--teal);
+}
+.dash__laws .dash__icon { width: calc(var(--w) * 0.9); }
+.dash__law { width: calc(var(--w) * 0.95); aspect-ratio: 5 / 7; border-radius: 6px; }
+.dash__law--empty { border: 2px dashed rgba(3, 40, 78, 0.35); }
+
+/* Level 1 has room: bigger economy icons. */
+.dash:not(.dash--l2) { gap: calc(var(--w) * 0.4); }
+.dash:not(.dash--l2) .dash__econ { padding: calc(var(--w) * 0.22); }

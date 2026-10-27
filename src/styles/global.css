@@ -6,6 +6,7 @@
   --cream: #faf2e0;
   --green: #1f9a6b;
   --purple: #7a42aa;
+  --ink: #1b1b1b;
   --rim: 6px;
   --radius: 12px;
   --touch: 56px;
@@ -13,8 +14,28 @@
   font-size: 18px;
   color: var(--navy);
   background: var(--navy);
+  -webkit-text-size-adjust: 100%;
 }
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; height: 100%; }
-body { overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
-h1, h2, h3, .num { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; }
+body {
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  background: var(--navy);
+}
+h1, h2, h3 { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; margin: 0; }
+input { font: inherit; -webkit-user-select: text; user-select: text; }
+
+/* The whole app sits inside a navy rim, like the board. */
+.frame {
+  position: fixed;
+  inset: 0;
+  border: var(--rim) solid var(--navy);
+  border-radius: 14px;
+  background: var(--cream);
+  overflow: hidden;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
