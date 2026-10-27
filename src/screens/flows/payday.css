@@ -1,0 +1,80 @@
+/* Payday laid out like the player mat: numbered steps down the left, the current action on the right. */
+.mat { display: grid; grid-template-columns: 1fr 330px; gap: 16px; align-items: start; }
+.mat__count { font-size: 20px; padding: 2px 10px; border-radius: 999px; background: var(--mustard); }
+.mat__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+
+.mat__row {
+  display: grid;
+  grid-template-columns: 38px 44px 104px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 60px;
+  padding: 6px 10px;
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  background: #fffaf0;
+  transition: opacity 200ms, background 200ms;
+}
+.mat__row.is-todo { opacity: 0.4; }
+.mat__row.is-active { background: #fff3cf; border-width: 3px; box-shadow: inset 6px 0 0 var(--mustard); }
+.mat__row.is-done .mat__body > *, .mat__row.is-done .mat__sub {
+  animation: row-in 380ms ease both;
+  animation-delay: calc(var(--i) * 220ms - 220ms);
+}
+@keyframes row-in { from { opacity: 0; transform: translateX(-10px); } }
+
+.mat__n {
+  display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy); color: var(--cream); font-size: 20px;
+}
+.mat__row.is-active .mat__n { background: var(--mustard); color: var(--navy); }
+.mat__icon { height: 44px; width: 44px; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 1.5px var(--navy); }
+.mat__label { font: 700 20px 'Poppins', sans-serif; text-transform: uppercase; }
+.mat__body { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.mat__sub { padding-left: 10px; min-width: 90px; text-align: right; }
+
+.mat__news { display: flex; align-items: center; gap: 10px; }
+.mat__news-out { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.mat__card { height: 72px; width: auto; border-radius: 5px; box-shadow: 0 0 0 1.5px var(--navy); }
+.mat__news .econ-move img { height: 56px; }
+.mat__news .happen img { height: 40px; }
+
+.mat__ask { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.mat__ask img { height: 56px; width: auto; border-radius: 4px; }
+.mat__ask .num { font-size: 22px; }
+.mat__ask .btn { min-width: 96px; min-height: 56px; font-size: 22px; }
+.mat__jobs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 24px; }
+.mat__jobs .pick-card img, .mat__jobs-lead { height: 84px; width: auto; border-radius: 5px; }
+.mat__choices { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.mat__choices .btn--side { min-width: 92px; }
+
+/* Compact money chips inside a step */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chipline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+  border: 1.5px solid rgba(3, 40, 78, 0.35);
+  border-radius: 10px;
+  background: #fff;
+}
+.chipline > img { height: 34px; width: 34px; object-fit: cover; border-radius: 5px; }
+.chipline__label { font: 700 18px 'Poppins', sans-serif; }
+.chipline small { font-size: 18px; opacity: 0.65; }
+.chipline .money { font-size: 20px; }
+.chipline--other { background: #f3efe6; }
+.chipline__who { display: inline-flex; align-items: center; gap: 2px; }
+
+/* Right column */
+.mat__side { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; }
+.mat__deck { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 0; border: 0; background: none; cursor: pointer; }
+.mat__deck img { width: 220px; border-radius: 14px; box-shadow: 0 8px 0 rgba(3, 40, 78, 0.3); }
+.mat__total {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 10px 12px;
+  border: 3px solid var(--navy); border-radius: 14px; background: #fff3cf;
+}
+.mat__total-label { font: 700 22px 'Poppins', sans-serif; text-transform: uppercase; flex: 1; }
+.mat__side .settle__row { gap: 6px; }
+.mat__side .settle__arrow { min-width: 96px; }
+.mat__done { margin-top: 4px; }

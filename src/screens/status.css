@@ -1,0 +1,53 @@
+.status {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 3px solid var(--navy);
+  background: #fff8ea;
+}
+.status__brand { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px; margin-right: auto; }
+.status__logo { height: 50px; width: auto; border-radius: 6px; }
+.status__level { font-size: 18px; padding: 2px 12px; border-radius: 999px; color: #fff; background: var(--navy); }
+.status__level--2 { background: var(--teal); }
+.status__level--3 { background: var(--purple); }
+
+.status__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+  background: var(--cream);
+  color: var(--navy);
+  font: inherit;
+}
+.status__icon { height: 64px; width: 64px; border-radius: 10px; }
+
+.status__econ { flex-direction: column; gap: 4px; padding: 6px 8px; }
+.status__econ-icon { height: 58px; width: 58px; border-radius: 10px; }
+.status__econ-scale { display: flex; gap: 3px; }
+.status__econ-scale span { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--navy); }
+.status__econ-scale .is-below { background: rgba(3, 40, 78, 0.35); }
+.status__econ-scale .is-on { background: var(--mustard); transform: scale(1.3); }
+
+.status__tracks { gap: 12px; border-color: var(--teal); }
+.track { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.track img { height: 44px; width: 44px; border-radius: 8px; }
+.track b { font-size: 20px; line-height: 1; text-transform: uppercase; }
+.track small { font-size: 18px; color: var(--teal); }
+
+.status__treasury { border-color: var(--teal); border-width: 3px; }
+.status__stack { display: flex; flex-direction: column; gap: 4px; }
+.status__row { display: flex; align-items: center; gap: 4px; }
+.status__bonds { display: inline-flex; align-items: center; gap: 2px; margin-right: 6px; }
+.status__bonds img { height: 28px; width: auto; border-radius: 3px; }
+.status__bonds b { font-size: 18px; }
+.status__pp { height: 28px; width: 28px; border-radius: 4px; opacity: 0.3; filter: grayscale(1); }
+.status__pp.is-built { opacity: 1; filter: none; box-shadow: 0 0 0 1.5px var(--navy); }
+
+.status__laws { cursor: pointer; border-color: var(--teal); }
+.status__laws .status__icon { height: 56px; width: 56px; }
+.status__law { height: 64px; width: auto; aspect-ratio: 5 / 7; border-radius: 4px; }
+.status__law--empty { width: 46px; border: 2px dashed rgba(3, 40, 78, 0.35); }

@@ -1,0 +1,53 @@
+.record { display: flex; flex-direction: column; gap: 16px; }
+.record__empty { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 40px; }
+.record__empty img { height: 120px; border-radius: 12px; opacity: 0.5; }
+.record__empty .num { font-size: 64px; opacity: 0.5; }
+.record__charts { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.record__charts--two { grid-template-columns: 1fr 1fr; }
+
+.chart-card { margin: 0; padding: 10px 12px; border: 2px solid var(--navy); border-radius: var(--radius); background: #fffaf0; min-width: 0; }
+.chart-card figcaption { display: flex; align-items: center; gap: 12px; font: 700 20px 'Poppins', sans-serif; text-transform: uppercase; margin-bottom: 4px; }
+.legend { display: inline-flex; align-items: center; gap: 6px; margin-left: auto; font: 700 18px 'Lato', sans-serif; text-transform: none; }
+.legend__key { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-left: 8px; }
+.legend__key--prices { background: var(--coral); }
+.legend__key--wages { background: var(--teal); border-radius: 3px; }
+
+.chart { position: relative; touch-action: pan-y; }
+.chart svg { display: block; }
+.chart__grid { stroke: rgba(3, 40, 78, 0.12); stroke-width: 1; }
+.chart__tick { font: 700 18px 'Lato', sans-serif; fill: rgba(3, 40, 78, 0.7); }
+.chart__direct { font: 700 18px 'Lato', sans-serif; fill: var(--navy); }
+.chart__cross { stroke: var(--navy); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.chart__tip {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  border: 2px solid var(--navy);
+  border-radius: 10px;
+  background: #fff;
+  font: 700 18px 'Lato', sans-serif;
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 0 rgba(3, 40, 78, 0.2);
+  text-transform: uppercase;
+}
+.chart__tip span { display: flex; align-items: center; gap: 6px; }
+.chart__swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+.chart__swatch--square { border-radius: 2px; }
+
+.record__table-wrap { overflow-x: auto; border: 2px solid var(--navy); border-radius: var(--radius); }
+.record__table { width: 100%; border-collapse: collapse; background: #fffaf0; }
+.record__table th, .record__table td { padding: 4px 8px; text-align: center; border-bottom: 1px solid rgba(3, 40, 78, 0.15); font-size: 20px; }
+.record__table th { background: #fff3cf; position: sticky; top: 0; }
+.record__table tr.is-sel td { background: #fdf0c4; }
+.record__table tbody tr { cursor: pointer; }
+.th-icon { height: 36px; width: auto; margin: 0 auto; border-radius: 4px; }
+.th-icon--round { border-radius: 50%; }
+.td-card { height: 48px; width: auto; margin: 0 auto; border-radius: 3px; }
+.td-icon { height: 36px; width: 36px; margin: 0 auto; border-radius: 6px; }
+.td-rate { text-transform: uppercase; font-size: 18px; }
+.record__table .token { margin: 0 auto; display: block; }

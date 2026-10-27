@@ -14,6 +14,15 @@ Changes to the rules or data beyond `SPEC.md`, with the reason. The app's "About
 4. **Halves round up to the next $10**, because the smallest note is $10. Selling to the Bank pays half of (price + Extra Sites paid), rounded up once (Lithium Mine $350 sells for $180). M12 half-price Extra Site and M14 half-price business also round up ($15 becomes $20, $175 becomes $180).
 5. **A utility won in the P10 auction can be sold back to the Bank** for half its auction price (rounded up). It returns to government ownership, so its bill goes to Treasury again.
 
+## Screens (changes to SPEC section 4)
+
+**2026-10-27: no mini board.** Andreas: the iPad is a companion, not a second board. The main screen no longer draws the 40-tile ring or the board-centre dashboard, and tokens do not walk. Instead it shows:
+- a status bar with the state the app calculates with: economy, Level 2 tracks, Treasury, Bonds, Public Projects, laws;
+- the current player's turn: one big next-step button and the side actions;
+- a card per player: job, papers, KEEP cards, and the businesses they own (tap one for its deed).
+
+The engine still tracks each token's space, because landing and passing PAYDAY depend on it. The dice sheet shows the destination tile, and "Wrong space?" corrects it. X01 board art appears only on the Home screen.
+
 ## Engine interpretations (small calls; flag any you disagree with)
 
 - **Super Fund:** the Bank's $50 needs a job; anyone may add up to $100 of their own (rulebook page 3 puts these in separate sentences).

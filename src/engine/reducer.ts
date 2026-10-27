@@ -590,6 +590,7 @@ function news(ctx: Ctx, cardId: string, jobRiskInputs: OpInputs['jobRisk']) {
     projectsBuilt: g.projectsBuilt,
   });
   ph.newsCard = cardId;
+  ph.newsEvents = ctx.events.length;
   ph.step = 'settle';
 }
 

@@ -154,3 +154,27 @@
 /* Result sheet */
 .result { display: flex; align-items: center; gap: 22px; }
 .result__art { height: 300px; width: auto; border-radius: 14px; box-shadow: 0 0 0 3px var(--navy); }
+
+/* Choice sheets */
+.site-count { display: flex; gap: 6px; }
+.site-count img { height: 64px; width: 64px; border-radius: 8px; box-shadow: 0 0 0 2px var(--navy); }
+.site-count img.is-empty { opacity: 0.25; }
+.study-opt { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.study-opt__card { display: flex; align-items: center; gap: 10px; }
+.study-opt__card img { height: 90px; width: auto; border-radius: 6px; }
+.study-opt__hecs { height: 90px; width: auto; border-radius: 6px; }
+.cost-to { display: inline-flex; align-items: center; gap: 8px; font-size: 26px; }
+.cost-to img { height: 52px; width: 52px; border-radius: 8px; }
+.savings-pile { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.savings-pile img { width: 160px; border-radius: 16px; }
+.stepper { display: flex; align-items: center; gap: 18px; }
+.stepper .btn { width: 84px; font-size: 34px; }
+.stepper__n { font-size: 44px; min-width: 150px; text-align: center; }
+.clip-row { display: flex; align-items: center; gap: 10px; padding: 8px; border: 2px solid var(--navy); border-radius: 14px; background: #fffaf0; }
+.clip-row > img { height: 96px; width: auto; border-radius: 6px; }
+.clip-btn { flex-direction: column; gap: 2px; min-width: 120px; font-size: 18px; }
+.clip-btn .num { font-size: 22px; }
+.clip-row__now { margin-left: auto; font-size: 28px; }
+.deal-row { display: flex; align-items: center; gap: 10px; padding: 8px; border: 2px solid var(--navy); border-radius: 14px; background: #fffaf0; }
+.deal-row img { height: 80px; width: auto; border-radius: 5px; }
+.deal-row__card { height: 64px !important; }

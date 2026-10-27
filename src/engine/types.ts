@@ -112,6 +112,7 @@ export interface PaydayPhase {
   playerId: string;
   resumeTo: number; // where the move finishes after Payday
   newsCard?: string;
+  newsEvents?: number; // how many of `events` came from the News card (step 1)
   lines: Transfer[]; // everything this Payday so far, for the itemised screen
   events: GameEvent[];
 }
