@@ -27,6 +27,7 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
   const [endMode, setEndMode] = useState<'paydays' | 'timer'>('paydays');
   const [minutes, setMinutes] = useState(45);
   const [step, setStep] = useState<Step>('level');
+  const [nudge, setNudge] = useState(0); // bumps to replay the shake on rows that still need a card
 
   const steps: Step[] = ['level', 'players', ...(level === 3 ? (['life'] as Step[]) : []), 'end', 'banker'];
   const at = steps.indexOf(step);
@@ -106,7 +107,7 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
 
         {step === 'players' && (
           <section className="players-step">
-            <div className="token-pick">
+            <div className={`token-pick${players.length < MIN_PLAYERS ? ` is-missing${nudgeClass(nudge)}` : ''}`}>
               {TOKENS.map((t) => {
                 const i = players.findIndex((p) => p.token === t);
                 return (
@@ -118,11 +119,11 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
                 );
               })}
               <span className="token-pick__count num">
-                {players.length}/{MIN_PLAYERS}–{MAX_PLAYERS}
+                {players.length < MIN_PLAYERS ? `${players.length}/${MIN_PLAYERS}+` : `${players.length}`}
               </span>
             </div>
             {players.map((p, i) => (
-              <div key={p.token} className="draft-row">
+              <div key={p.token} className={`draft-row${p.jobId ? '' : ` is-missing${nudgeClass(nudge)}`}`}>
                 <span className="draft-row__n num">{i === 0 ? '★' : i + 1}</span>
                 <Token token={p.token} size={56} />
                 <input
@@ -134,6 +135,7 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
                   aria-label="Name"
                 />
                 <div className="card-pick">
+                  {!p.jobId && <span className="card-pick__hint">Job card</span>}
                   {ENTRY_JOBS.map((j) => {
                     const takenBy = players.find((q) => q.jobId === j && q.token !== p.token);
                     return (
@@ -153,11 +155,12 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
         {step === 'life' && (
           <section className="players-step">
             {players.map((p, i) => (
-              <div key={p.token} className="draft-row">
+              <div key={p.token} className={`draft-row${p.startingLife ? '' : ` is-missing${nudgeClass(nudge)}`}`}>
                 <span className="draft-row__n num">{i === 0 ? '★' : i + 1}</span>
                 <Token token={p.token} size={56} />
                 <span className="draft-row__label">{p.name.trim() || TOKEN_NAME[p.token]}</span>
                 <div className="card-pick">
+                  {!p.startingLife && <span className="card-pick__hint">Life card</span>}
                   {LIFE_CARDS.map((s) => {
                     const used = players.filter((q) => q.startingLife === s && q.token !== p.token).length;
                     return (
@@ -201,7 +204,14 @@ export function Setup({ onCancel, onStart }: { onCancel: () => void; onStart: ()
         {step === 'banker' ? (
           <Btn tone="green" big onClick={start}>Start</Btn>
         ) : (
-          <Btn tone="teal" big disabled={!ready[step]} onClick={() => setStep(steps[at + 1])}>Next</Btn>
+          <Btn tone="teal" big className={ready[step] ? '' : 'is-waiting'} aria-disabled={!ready[step]}
+            onClick={() => {
+              if (ready[step]) return setStep(steps[at + 1]);
+              setNudge((n) => n + 1);
+              toast(missingMessage(step, players.length));
+            }}>
+            Next
+          </Btn>
         )}
       </footer>
     </div>
@@ -237,4 +247,14 @@ function Banker({ action }: { action: Extract<Action, { type: 'setup' }> }) {
       })}
     </section>
   );
+}
+
+/** Alternates two class names so the shake animation replays on every tap of a not-ready NEXT. */
+const nudgeClass = (n: number) => (n === 0 ? '' : n % 2 ? ' nudge-a' : ' nudge-b');
+
+function missingMessage(step: Step, count: number): string {
+  if (step === 'level') return 'Pick a level';
+  if (step === 'players') return count < MIN_PLAYERS ? `Tap ${MIN_PLAYERS}+ tokens` : 'Tap a job card for each player';
+  if (step === 'life') return 'Tap a Life card for each player';
+  return '';
 }
