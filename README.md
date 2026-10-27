@@ -30,4 +30,4 @@ Open the site in Safari, tap Share, then **Add to Home Screen**. It then opens f
 
 ## Deploy (Vercel)
 
-Root Directory `companion-app`, Framework Preset **Vite**, Build Command `npm run build`, Output Directory `dist`.
+This repository *is* the `companion-app/` folder (git was initialised inside it), so on Vercel leave **Root Directory** at the repository root (`./`). Framework Preset **Vite**, Build Command `npm run build`, Output Directory `dist`, Install Command `npm install`. No environment variables are needed.
