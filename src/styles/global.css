@@ -1,0 +1,20 @@
+:root {
+  --navy: #03284e;
+  --teal: #0e9c9d;
+  --coral: #f2634d;
+  --mustard: #f7b928;
+  --cream: #faf2e0;
+  --green: #1f9a6b;
+  --purple: #7a42aa;
+  --rim: 6px;
+  --radius: 12px;
+  --touch: 56px;
+  font-family: 'Lato', system-ui, sans-serif;
+  font-size: 18px;
+  color: var(--navy);
+  background: var(--navy);
+}
+* { box-sizing: border-box; }
+html, body, #root { margin: 0; height: 100%; }
+body { overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+h1, h2, h3, .num { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; }

@@ -1,0 +1,2901 @@
+{
+  "economy": [
+    {
+      "key": "RECESSION",
+      "icon": "E01"
+    },
+    {
+      "key": "SLOW",
+      "icon": "E02"
+    },
+    {
+      "key": "STEADY",
+      "icon": "E03"
+    },
+    {
+      "key": "GROWTH",
+      "icon": "E04"
+    },
+    {
+      "key": "BOOM",
+      "icon": "E05"
+    }
+  ],
+  "industries": {
+    "market_stalls": {
+      "name": "Market Stalls",
+      "sector": "tertiary",
+      "colour": "#D9A35B",
+      "kind": "customer"
+    },
+    "food_shops": {
+      "name": "Food Shops",
+      "sector": "tertiary",
+      "colour": "#4FB3E8",
+      "kind": "customer"
+    },
+    "trades": {
+      "name": "Trades",
+      "sector": "tertiary",
+      "colour": "#7B3FA0",
+      "kind": "customer"
+    },
+    "takeaway": {
+      "name": "Takeaway",
+      "sector": "tertiary",
+      "colour": "#F26B2A",
+      "kind": "customer"
+    },
+    "fun_fitness": {
+      "name": "Fun & Fitness",
+      "sector": "tertiary",
+      "colour": "#F2668B",
+      "kind": "customer"
+    },
+    "big_shops": {
+      "name": "Big Shops",
+      "sector": "tertiary",
+      "colour": "#F7C531",
+      "kind": "customer"
+    },
+    "factories": {
+      "name": "Factories",
+      "sector": "secondary",
+      "colour": "#1E7A4C",
+      "kind": "employer",
+      "shiftPay": 20,
+      "shiftPayIfOwnsAll": 10
+    },
+    "mines": {
+      "name": "Mines",
+      "sector": "primary",
+      "colour": "#3A3A3A",
+      "kind": "employer",
+      "shiftPay": 40,
+      "shiftPayIfOwnsAll": 20
+    },
+    "transport": {
+      "name": "Transport",
+      "sector": "tertiary",
+      "colour": "#03284E",
+      "kind": "transport",
+      "perTransportOwned": 20
+    },
+    "utilities": {
+      "name": "Utilities",
+      "sector": "government",
+      "colour": "#FFFFFF",
+      "kind": "utility",
+      "bill": 20
+    }
+  },
+  "linkedIndustries": [
+    [
+      "mines",
+      "factories"
+    ],
+    [
+      "factories",
+      "big_shops"
+    ],
+    [
+      "food_shops",
+      "takeaway"
+    ],
+    [
+      "trades",
+      "fun_fitness"
+    ],
+    [
+      "transport",
+      "*"
+    ]
+  ],
+  "businesses": [
+    {
+      "id": "coffee_cart",
+      "name": "Coffee Cart",
+      "industry": "market_stalls",
+      "price": 60,
+      "customerPrices": {
+        "budget": 10,
+        "standard": 20,
+        "premium": 30,
+        "monopoly": 40
+      },
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 10,
+        "GROWTH": 20,
+        "BOOM": 30
+      },
+      "extraSiteCost": 30,
+      "tile": "B01",
+      "deed": "D01"
+    },
+    {
+      "id": "fruit_veg",
+      "name": "Fruit & Veg Stall",
+      "industry": "market_stalls",
+      "price": 60,
+      "customerPrices": {
+        "budget": 10,
+        "standard": 20,
+        "premium": 30,
+        "monopoly": 40
+      },
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 10,
+        "GROWTH": 20,
+        "BOOM": 30
+      },
+      "extraSiteCost": 30,
+      "tile": "B02",
+      "deed": "D02"
+    },
+    {
+      "id": "bakery",
+      "name": "Bakery",
+      "industry": "food_shops",
+      "price": 100,
+      "customerPrices": {
+        "budget": 10,
+        "standard": 20,
+        "premium": 30,
+        "monopoly": 40
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 20,
+        "GROWTH": 20,
+        "BOOM": 30
+      },
+      "extraSiteCost": 50,
+      "tile": "B03",
+      "deed": "D03"
+    },
+    {
+      "id": "butcher",
+      "name": "Butcher",
+      "industry": "food_shops",
+      "price": 100,
+      "customerPrices": {
+        "budget": 10,
+        "standard": 20,
+        "premium": 30,
+        "monopoly": 40
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 20,
+        "GROWTH": 20,
+        "BOOM": 30
+      },
+      "extraSiteCost": 50,
+      "tile": "B04",
+      "deed": "D04"
+    },
+    {
+      "id": "corner_deli",
+      "name": "Corner Deli",
+      "industry": "food_shops",
+      "price": 120,
+      "customerPrices": {
+        "budget": 10,
+        "standard": 20,
+        "premium": 30,
+        "monopoly": 40
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 20,
+        "GROWTH": 20,
+        "BOOM": 30
+      },
+      "extraSiteCost": 50,
+      "tile": "B05",
+      "deed": "D05"
+    },
+    {
+      "id": "car_mechanic",
+      "name": "Car Mechanic",
+      "industry": "trades",
+      "price": 140,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 70,
+      "tile": "B06",
+      "deed": "D06"
+    },
+    {
+      "id": "plumber",
+      "name": "Plumber",
+      "industry": "trades",
+      "price": 140,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 70,
+      "tile": "B07",
+      "deed": "D07"
+    },
+    {
+      "id": "electrician",
+      "name": "Electrician",
+      "industry": "trades",
+      "price": 160,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 70,
+      "tile": "B08",
+      "deed": "D08"
+    },
+    {
+      "id": "pizza_place",
+      "name": "Pizza Place",
+      "industry": "takeaway",
+      "price": 180,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 30,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 90,
+      "tile": "B09",
+      "deed": "D09"
+    },
+    {
+      "id": "burger_bar",
+      "name": "Burger Bar",
+      "industry": "takeaway",
+      "price": 180,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 30,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 90,
+      "tile": "B10",
+      "deed": "D10"
+    },
+    {
+      "id": "sushi_bar",
+      "name": "Sushi Bar",
+      "industry": "takeaway",
+      "price": 200,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 30,
+        "premium": 40,
+        "monopoly": 60
+      },
+      "profit": {
+        "RECESSION": 10,
+        "SLOW": 20,
+        "STEADY": 30,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": 90,
+      "tile": "B11",
+      "deed": "D11"
+    },
+    {
+      "id": "gym",
+      "name": "Gym",
+      "industry": "fun_fitness",
+      "price": 220,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 40,
+        "premium": 50,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": -20,
+        "SLOW": 0,
+        "STEADY": 30,
+        "GROWTH": 50,
+        "BOOM": 70
+      },
+      "extraSiteCost": 110,
+      "tile": "B12",
+      "deed": "D12"
+    },
+    {
+      "id": "cinema",
+      "name": "Cinema",
+      "industry": "fun_fitness",
+      "price": 220,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 40,
+        "premium": 50,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": -20,
+        "SLOW": 0,
+        "STEADY": 30,
+        "GROWTH": 50,
+        "BOOM": 70
+      },
+      "extraSiteCost": 110,
+      "tile": "B13",
+      "deed": "D13"
+    },
+    {
+      "id": "trampoline_park",
+      "name": "Trampoline Park",
+      "industry": "fun_fitness",
+      "price": 240,
+      "customerPrices": {
+        "budget": 20,
+        "standard": 40,
+        "premium": 50,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": -20,
+        "SLOW": 0,
+        "STEADY": 30,
+        "GROWTH": 50,
+        "BOOM": 70
+      },
+      "extraSiteCost": 110,
+      "tile": "B14",
+      "deed": "D14"
+    },
+    {
+      "id": "clothing_store",
+      "name": "Clothing Store",
+      "industry": "big_shops",
+      "price": 260,
+      "customerPrices": {
+        "budget": 30,
+        "standard": 40,
+        "premium": 60,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": -10,
+        "SLOW": 20,
+        "STEADY": 40,
+        "GROWTH": 50,
+        "BOOM": 60
+      },
+      "extraSiteCost": 130,
+      "tile": "B15",
+      "deed": "D15"
+    },
+    {
+      "id": "electronics_store",
+      "name": "Electronics Store",
+      "industry": "big_shops",
+      "price": 260,
+      "customerPrices": {
+        "budget": 30,
+        "standard": 40,
+        "premium": 60,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": -10,
+        "SLOW": 20,
+        "STEADY": 40,
+        "GROWTH": 50,
+        "BOOM": 60
+      },
+      "extraSiteCost": 130,
+      "tile": "B16",
+      "deed": "D16"
+    },
+    {
+      "id": "supermarket",
+      "name": "Supermarket",
+      "industry": "big_shops",
+      "price": 280,
+      "customerPrices": {
+        "budget": 30,
+        "standard": 40,
+        "premium": 60,
+        "monopoly": 80
+      },
+      "profit": {
+        "RECESSION": 40,
+        "SLOW": 40,
+        "STEADY": 40,
+        "GROWTH": 40,
+        "BOOM": 50
+      },
+      "extraSiteCost": 140,
+      "tile": "B17",
+      "deed": "D17"
+    },
+    {
+      "id": "furniture_factory",
+      "name": "Furniture Factory",
+      "industry": "factories",
+      "price": 300,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": -30,
+        "SLOW": 10,
+        "STEADY": 50,
+        "GROWTH": 70,
+        "BOOM": 90
+      },
+      "extraSiteCost": 150,
+      "tile": "B18",
+      "deed": "D18"
+    },
+    {
+      "id": "boat_builder",
+      "name": "Boat Builder",
+      "industry": "factories",
+      "price": 300,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": -30,
+        "SLOW": 10,
+        "STEADY": 50,
+        "GROWTH": 70,
+        "BOOM": 90
+      },
+      "extraSiteCost": 150,
+      "tile": "B19",
+      "deed": "D19"
+    },
+    {
+      "id": "solar_factory",
+      "name": "Solar Panel Factory",
+      "industry": "factories",
+      "price": 320,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": -30,
+        "SLOW": 10,
+        "STEADY": 50,
+        "GROWTH": 70,
+        "BOOM": 90
+      },
+      "extraSiteCost": 150,
+      "tile": "B20",
+      "deed": "D20"
+    },
+    {
+      "id": "lithium_mine",
+      "name": "Lithium Mine",
+      "industry": "mines",
+      "price": 350,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": -50,
+        "SLOW": 0,
+        "STEADY": 60,
+        "GROWTH": 100,
+        "BOOM": 150
+      },
+      "extraSiteCost": 180,
+      "tile": "B21",
+      "deed": "D21"
+    },
+    {
+      "id": "iron_ore_mine",
+      "name": "Iron Ore Mine",
+      "industry": "mines",
+      "price": 400,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": -40,
+        "SLOW": 20,
+        "STEADY": 70,
+        "GROWTH": 110,
+        "BOOM": 160
+      },
+      "extraSiteCost": 200,
+      "tile": "B22",
+      "deed": "D22"
+    },
+    {
+      "id": "trucking",
+      "name": "Trucking Company",
+      "industry": "transport",
+      "price": 200,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": null,
+      "tile": "B23",
+      "deed": "D23"
+    },
+    {
+      "id": "freight_railway",
+      "name": "Freight Railway",
+      "industry": "transport",
+      "price": 200,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": null,
+      "tile": "B24",
+      "deed": "D24"
+    },
+    {
+      "id": "fremantle_port",
+      "name": "Fremantle Port",
+      "industry": "transport",
+      "price": 200,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": null,
+      "tile": "B25",
+      "deed": "D25"
+    },
+    {
+      "id": "perth_airport",
+      "name": "Perth Airport",
+      "industry": "transport",
+      "price": 200,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 0,
+        "SLOW": 10,
+        "STEADY": 20,
+        "GROWTH": 30,
+        "BOOM": 40
+      },
+      "extraSiteCost": null,
+      "tile": "B26",
+      "deed": "D26"
+    },
+    {
+      "id": "power_company",
+      "name": "Power Company",
+      "industry": "utilities",
+      "price": null,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 20,
+        "SLOW": 20,
+        "STEADY": 20,
+        "GROWTH": 20,
+        "BOOM": 20
+      },
+      "extraSiteCost": null,
+      "tile": "A06",
+      "deed": "D27"
+    },
+    {
+      "id": "water_company",
+      "name": "Water Company",
+      "industry": "utilities",
+      "price": null,
+      "customerPrices": null,
+      "profit": {
+        "RECESSION": 20,
+        "SLOW": 20,
+        "STEADY": 20,
+        "GROWTH": 20,
+        "BOOM": 20
+      },
+      "extraSiteCost": null,
+      "tile": "A07",
+      "deed": "D28"
+    }
+  ],
+  "spaces": [
+    {
+      "pos": 0,
+      "tile": "C01",
+      "kind": "payday",
+      "label": "PAYDAY",
+      "side": "corner"
+    },
+    {
+      "pos": 1,
+      "tile": "B01",
+      "kind": "business",
+      "businessId": "coffee_cart",
+      "label": "Coffee Cart",
+      "side": "bottom"
+    },
+    {
+      "pos": 2,
+      "tile": "A01",
+      "kind": "life",
+      "label": "Life card",
+      "side": "bottom"
+    },
+    {
+      "pos": 3,
+      "tile": "B02",
+      "kind": "business",
+      "businessId": "fruit_veg",
+      "label": "Fruit & Veg Stall",
+      "side": "bottom"
+    },
+    {
+      "pos": 4,
+      "tile": "A04",
+      "kind": "tax_time",
+      "label": "Tax Time",
+      "side": "bottom"
+    },
+    {
+      "pos": 5,
+      "tile": "B23",
+      "kind": "business",
+      "businessId": "trucking",
+      "label": "Trucking Company",
+      "side": "bottom"
+    },
+    {
+      "pos": 6,
+      "tile": "B03",
+      "kind": "business",
+      "businessId": "bakery",
+      "label": "Bakery",
+      "side": "bottom"
+    },
+    {
+      "pos": 7,
+      "tile": "A03",
+      "kind": "open_day",
+      "label": "TAFE & Uni Open Day",
+      "side": "bottom"
+    },
+    {
+      "pos": 8,
+      "tile": "B04",
+      "kind": "business",
+      "businessId": "butcher",
+      "label": "Butcher",
+      "side": "bottom"
+    },
+    {
+      "pos": 9,
+      "tile": "B05",
+      "kind": "business",
+      "businessId": "corner_deli",
+      "label": "Corner Deli",
+      "side": "bottom"
+    },
+    {
+      "pos": 10,
+      "tile": "C02",
+      "kind": "job_centre",
+      "label": "JOB CENTRE",
+      "side": "corner"
+    },
+    {
+      "pos": 11,
+      "tile": "B06",
+      "kind": "business",
+      "businessId": "car_mechanic",
+      "label": "Car Mechanic",
+      "side": "right"
+    },
+    {
+      "pos": 12,
+      "tile": "A06",
+      "kind": "utility",
+      "businessId": "power_company",
+      "label": "Power Company",
+      "side": "right"
+    },
+    {
+      "pos": 13,
+      "tile": "B07",
+      "kind": "business",
+      "businessId": "plumber",
+      "label": "Plumber",
+      "side": "right"
+    },
+    {
+      "pos": 14,
+      "tile": "B08",
+      "kind": "business",
+      "businessId": "electrician",
+      "label": "Electrician",
+      "side": "right"
+    },
+    {
+      "pos": 15,
+      "tile": "B24",
+      "kind": "business",
+      "businessId": "freight_railway",
+      "label": "Freight Railway",
+      "side": "right"
+    },
+    {
+      "pos": 16,
+      "tile": "B09",
+      "kind": "business",
+      "businessId": "pizza_place",
+      "label": "Pizza Place",
+      "side": "right"
+    },
+    {
+      "pos": 17,
+      "tile": "A01",
+      "kind": "life",
+      "label": "Life card",
+      "side": "right"
+    },
+    {
+      "pos": 18,
+      "tile": "B10",
+      "kind": "business",
+      "businessId": "burger_bar",
+      "label": "Burger Bar",
+      "side": "right"
+    },
+    {
+      "pos": 19,
+      "tile": "B11",
+      "kind": "business",
+      "businessId": "sushi_bar",
+      "label": "Sushi Bar",
+      "side": "right"
+    },
+    {
+      "pos": 20,
+      "tile": "C03",
+      "kind": "parliament",
+      "label": "PARLIAMENT",
+      "side": "corner"
+    },
+    {
+      "pos": 21,
+      "tile": "B12",
+      "kind": "business",
+      "businessId": "gym",
+      "label": "Gym",
+      "side": "top"
+    },
+    {
+      "pos": 22,
+      "tile": "A02",
+      "kind": "market",
+      "label": "Market card",
+      "side": "top"
+    },
+    {
+      "pos": 23,
+      "tile": "B13",
+      "kind": "business",
+      "businessId": "cinema",
+      "label": "Cinema",
+      "side": "top"
+    },
+    {
+      "pos": 24,
+      "tile": "B14",
+      "kind": "business",
+      "businessId": "trampoline_park",
+      "label": "Trampoline Park",
+      "side": "top"
+    },
+    {
+      "pos": 25,
+      "tile": "B25",
+      "kind": "business",
+      "businessId": "fremantle_port",
+      "label": "Fremantle Port",
+      "side": "top"
+    },
+    {
+      "pos": 26,
+      "tile": "B15",
+      "kind": "business",
+      "businessId": "clothing_store",
+      "label": "Clothing Store",
+      "side": "top"
+    },
+    {
+      "pos": 27,
+      "tile": "B16",
+      "kind": "business",
+      "businessId": "electronics_store",
+      "label": "Electronics Store",
+      "side": "top"
+    },
+    {
+      "pos": 28,
+      "tile": "A07",
+      "kind": "utility",
+      "businessId": "water_company",
+      "label": "Water Company",
+      "side": "top"
+    },
+    {
+      "pos": 29,
+      "tile": "B17",
+      "kind": "business",
+      "businessId": "supermarket",
+      "label": "Supermarket",
+      "side": "top"
+    },
+    {
+      "pos": 30,
+      "tile": "C04",
+      "kind": "job_cut",
+      "label": "JOB CUT",
+      "side": "corner"
+    },
+    {
+      "pos": 31,
+      "tile": "B18",
+      "kind": "business",
+      "businessId": "furniture_factory",
+      "label": "Furniture Factory",
+      "side": "left"
+    },
+    {
+      "pos": 32,
+      "tile": "B19",
+      "kind": "business",
+      "businessId": "boat_builder",
+      "label": "Boat Builder",
+      "side": "left"
+    },
+    {
+      "pos": 33,
+      "tile": "A01",
+      "kind": "life",
+      "label": "Life card",
+      "side": "left"
+    },
+    {
+      "pos": 34,
+      "tile": "B20",
+      "kind": "business",
+      "businessId": "solar_factory",
+      "label": "Solar Panel Factory",
+      "side": "left"
+    },
+    {
+      "pos": 35,
+      "tile": "B26",
+      "kind": "business",
+      "businessId": "perth_airport",
+      "label": "Perth Airport",
+      "side": "left"
+    },
+    {
+      "pos": 36,
+      "tile": "A02",
+      "kind": "market",
+      "label": "Market card",
+      "side": "left"
+    },
+    {
+      "pos": 37,
+      "tile": "B21",
+      "kind": "business",
+      "businessId": "lithium_mine",
+      "label": "Lithium Mine",
+      "side": "left"
+    },
+    {
+      "pos": 38,
+      "tile": "A05",
+      "kind": "super_fund",
+      "label": "Super Fund",
+      "side": "left"
+    },
+    {
+      "pos": 39,
+      "tile": "B22",
+      "kind": "business",
+      "businessId": "iron_ore_mine",
+      "label": "Iron Ore Mine",
+      "side": "left"
+    }
+  ],
+  "jobLevels": {
+    "entry": {
+      "pay": 100,
+      "tax": 10,
+      "takeHome": 90,
+      "jobRisk": "always_lose",
+      "dieLoseMax": 6
+    },
+    "skilled": {
+      "pay": 160,
+      "tax": 30,
+      "takeHome": 130,
+      "jobRisk": "die_1_to_3",
+      "dieLoseMax": 3
+    },
+    "professional": {
+      "pay": 220,
+      "tax": 50,
+      "takeHome": 170,
+      "jobRisk": "die_1_to_2",
+      "dieLoseMax": 2
+    }
+  },
+  "jobs": [
+    {
+      "id": "J01",
+      "name": "Retail Assistant",
+      "level": "entry",
+      "card": "J01"
+    },
+    {
+      "id": "J02",
+      "name": "Kitchen Hand",
+      "level": "entry",
+      "card": "J02"
+    },
+    {
+      "id": "J03",
+      "name": "Cashier",
+      "level": "entry",
+      "card": "J03"
+    },
+    {
+      "id": "J04",
+      "name": "Delivery Driver",
+      "level": "entry",
+      "card": "J04"
+    },
+    {
+      "id": "J05",
+      "name": "Farm Hand",
+      "level": "entry",
+      "card": "J05"
+    },
+    {
+      "id": "J06",
+      "name": "Cleaner",
+      "level": "entry",
+      "card": "J06"
+    },
+    {
+      "id": "J07",
+      "name": "Chef",
+      "level": "skilled",
+      "card": "J07"
+    },
+    {
+      "id": "J08",
+      "name": "Hairdresser",
+      "level": "skilled",
+      "card": "J08"
+    },
+    {
+      "id": "J09",
+      "name": "Childcare Educator",
+      "level": "skilled",
+      "card": "J09"
+    },
+    {
+      "id": "J10",
+      "name": "Carpenter",
+      "level": "skilled",
+      "card": "J10"
+    },
+    {
+      "id": "J11",
+      "name": "Welder",
+      "level": "skilled",
+      "card": "J11"
+    },
+    {
+      "id": "J12",
+      "name": "Aged Care Worker",
+      "level": "skilled",
+      "card": "J12"
+    },
+    {
+      "id": "J13",
+      "name": "Nurse",
+      "level": "professional",
+      "card": "J13"
+    },
+    {
+      "id": "J14",
+      "name": "Engineer",
+      "level": "professional",
+      "card": "J14"
+    },
+    {
+      "id": "J15",
+      "name": "Teacher",
+      "level": "professional",
+      "card": "J15"
+    },
+    {
+      "id": "J16",
+      "name": "Accountant",
+      "level": "professional",
+      "card": "J16"
+    },
+    {
+      "id": "J17",
+      "name": "Software Developer",
+      "level": "professional",
+      "card": "J17"
+    },
+    {
+      "id": "J18",
+      "name": "Geologist",
+      "level": "professional",
+      "card": "J18"
+    }
+  ],
+  "tracks": {
+    "prices": {
+      "level": 2,
+      "icon": "I01",
+      "positions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "start": 2,
+      "livingCosts": {
+        "1": 60,
+        "2": 70,
+        "3": 80,
+        "4": 90,
+        "5": 100,
+        "6": 120
+      },
+      "customerPriceBonusFrom": 4,
+      "customerPriceBonus": 10
+    },
+    "wages": {
+      "level": 2,
+      "icon": "I02",
+      "positions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "start": 0,
+      "takeHomeBonusPerStep": 10
+    },
+    "interest": {
+      "level": 2,
+      "icon": "I03",
+      "positions": [
+        "LOW",
+        "NORMAL",
+        "HIGH",
+        "VERY HIGH"
+      ],
+      "start": "NORMAL",
+      "loanInterest": {
+        "LOW": 10,
+        "NORMAL": 20,
+        "HIGH": 30,
+        "VERY HIGH": 40
+      },
+      "savingsInterestPer200": {
+        "LOW": 0,
+        "NORMAL": 10,
+        "HIGH": 20,
+        "VERY HIGH": 30
+      }
+    }
+  },
+  "projects": [
+    {
+      "order": 1,
+      "id": "PP1",
+      "name": "Roads & Bridges",
+      "tile": "PP1"
+    },
+    {
+      "order": 2,
+      "id": "PP2",
+      "name": "Public Hospital",
+      "tile": "PP2"
+    },
+    {
+      "order": 3,
+      "id": "PP3",
+      "name": "New High School",
+      "tile": "PP3"
+    },
+    {
+      "order": 4,
+      "id": "PP4",
+      "name": "Fast Internet",
+      "tile": "PP4"
+    },
+    {
+      "order": 5,
+      "id": "PP5",
+      "name": "Train Line",
+      "tile": "PP5"
+    }
+  ],
+  "constants": {
+    "startCash": 400,
+    "treasuryStart": 200,
+    "livingCostsLevel1": 70,
+    "loanSize": 200,
+    "loanInterestLevel1": 20,
+    "loanLimit": "1 per business owned + 1 if employed",
+    "hecsPerPayday": 20,
+    "jobSeeker": 50,
+    "studyAllowance": 30,
+    "tafeFee": 50,
+    "tafeTokens": 1,
+    "uniTokens": 2,
+    "superFundEmployer": 50,
+    "superFundOwnMax": 100,
+    "companyTaxPerBusiness": 20,
+    "utilityBill": 20,
+    "projectCost": 300,
+    "projectBuildThreshold": 400,
+    "projectPaysPerPlayer": 10,
+    "bondSize": 200,
+    "bondInterestLevel2": 10,
+    "maxExtraSites": 2,
+    "sellToBankFraction": 0.5,
+    "bankruptTokens": 3,
+    "cartelFine": 100,
+    "supplyDealPerPayday": 20,
+    "maxSupplyDealsPerPlayer": 2,
+    "supplyDealCards": 6,
+    "endGamePaydays": 5,
+    "superMultiplierAtEnd": 2,
+    "loanValueAtEnd": -200,
+    "hecsValueAtEnd": -100,
+    "businessMultiplierAtEnd": {
+      "RECESSION": 0.5,
+      "BOOM": 1.5
+    },
+    "auctionMinBid": 10,
+    "utilityAuctionMinBid": 100,
+    "maxLaws": 3,
+    "debateSeconds": 30,
+    "notes": [
+      500,
+      100,
+      50,
+      20,
+      10
+    ],
+    "savingsBlock": 200,
+    "superFundStep": 10,
+    "economyStart": "STEADY"
+  },
+  "cards": {
+    "news": [
+      {
+        "id": "N01",
+        "deck": "news",
+        "title": "Iron ore sales to Asia soar",
+        "image": "N01",
+        "level": 1,
+        "text": "Economy up 1. The Iron Ore Mine owner collects $50.",
+        "logic": "Owner of iron_ore_mine collects $50 from Bank.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "ownerOf",
+            "amount": 50,
+            "with": "bank",
+            "business": "iron_ore_mine"
+          }
+        ]
+      },
+      {
+        "id": "N02",
+        "deck": "news",
+        "title": "Shoppers are spending again",
+        "image": "N02",
+        "level": 1,
+        "text": "Economy up 1.",
+        "logic": "No money moves.",
+        "economy": 1,
+        "effect": []
+      },
+      {
+        "id": "N03",
+        "deck": "news",
+        "title": "New suburbs planned: builders flat out",
+        "image": "N03",
+        "level": 1,
+        "text": "Economy up 1. Trades owners collect $20 per Trades business.",
+        "logic": "Each player collects $20 x (trades businesses they own) from Bank.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "trades"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N04",
+        "deck": "news",
+        "title": "Tourists flock back to WA",
+        "image": "N04",
+        "level": 1,
+        "text": "Economy up 1. Fun & Fitness owners collect $20 per business.",
+        "logic": "Each player collects $20 x (fun_fitness businesses they own) from Bank.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "fun_fitness"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N05",
+        "deck": "news",
+        "title": "Lithium rush for electric car batteries",
+        "image": "N05",
+        "level": 1,
+        "text": "Economy up 1. The Lithium Mine owner collects $50.",
+        "logic": "Owner of lithium_mine collects $50 from Bank.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "ownerOf",
+            "amount": 50,
+            "with": "bank",
+            "business": "lithium_mine"
+          }
+        ]
+      },
+      {
+        "id": "N06",
+        "deck": "news",
+        "title": "Government spends big on roads and rail",
+        "image": "N06",
+        "level": 1,
+        "text": "Economy up 1. Treasury builds the next Public Project now, borrowing if it must.",
+        "logic": "Treasury builds the next unbuilt Public Project now ($300 to Bank), borrowing Bonds if short. Nothing extra if all 5 are built.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "buildProject"
+          }
+        ]
+      },
+      {
+        "id": "N07",
+        "deck": "news",
+        "title": "Record wheat harvest",
+        "image": "N07",
+        "level": 1,
+        "text": "Economy up 1. Food Shop owners collect $20 per Food Shop.",
+        "logic": "Each player collects $20 x (food_shops businesses they own: Bakery, Butcher, Corner Deli; not the Supermarket) from Bank.",
+        "economy": 1,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "food_shops"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N08",
+        "deck": "news",
+        "title": "Businesses confident: new shops opening",
+        "image": "N08",
+        "level": 1,
+        "text": "Economy up 1.",
+        "logic": "No money moves.",
+        "economy": 1,
+        "effect": []
+      },
+      {
+        "id": "N09",
+        "deck": "news",
+        "title": "Overseas orders dry up",
+        "image": "N09",
+        "level": 1,
+        "text": "Economy down 1. Factory owners pay $20 per Factory.",
+        "logic": "Each player pays $20 x (factories they own) to Bank.",
+        "economy": -1,
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "factories"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N10",
+        "deck": "news",
+        "title": "Shoppers tighten their belts",
+        "image": "N10",
+        "level": 1,
+        "text": "Economy down 1.",
+        "logic": "No money moves.",
+        "economy": -1,
+        "effect": []
+      },
+      {
+        "id": "N11",
+        "deck": "news",
+        "title": "Banking crisis overseas",
+        "image": "N11",
+        "level": 1,
+        "text": "Economy down 2. Nobody can take a new loan until the next News card.",
+        "logic": "Set flag noNewLoans = true. Clear it when the next News card is resolved.",
+        "economy": -2,
+        "effect": [
+          {
+            "do": "setFlag",
+            "flag": "noNewLoans"
+          }
+        ]
+      },
+      {
+        "id": "N12",
+        "deck": "news",
+        "title": "Pandemic: shops shut for a month",
+        "image": "N12",
+        "level": 1,
+        "text": "Economy down 2. Treasury pays every player $50 support, borrowing if it must.",
+        "logic": "Treasury pays $50 to every player, borrowing Bonds if short.",
+        "economy": -2,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 50,
+            "with": "treasury"
+          }
+        ]
+      },
+      {
+        "id": "N13",
+        "deck": "news",
+        "title": "Trade war: new taxes on our exports",
+        "image": "N13",
+        "level": 1,
+        "text": "Economy down 1. Mine owners pay $30 per Mine.",
+        "logic": "Each player pays $30 x (mines they own) to Bank.",
+        "economy": -1,
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 30,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "mines"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N14",
+        "deck": "news",
+        "title": "Share market crash",
+        "image": "N14",
+        "level": 1,
+        "text": "Economy down 1. Every player loses $50 from their Super, if they have it.",
+        "logic": "Each player's Super falls by min($50, their Super). That money goes from their Super pile to the Bank.",
+        "economy": -1,
+        "effect": [
+          {
+            "do": "superLoss",
+            "amount": 50
+          }
+        ]
+      },
+      {
+        "id": "N15",
+        "deck": "news",
+        "title": "Quiet quarter: no big news",
+        "image": "N15",
+        "level": 1,
+        "text": "Nothing changes.",
+        "logic": "Nothing happens.",
+        "economy": 0,
+        "effect": []
+      },
+      {
+        "id": "N16",
+        "deck": "news",
+        "title": "Experts say steady as she goes",
+        "image": "N16",
+        "level": 1,
+        "text": "Nothing changes.",
+        "logic": "Nothing happens.",
+        "economy": 0,
+        "effect": []
+      },
+      {
+        "id": "N17",
+        "deck": "news",
+        "title": "Oil price shock",
+        "image": "N17",
+        "level": 1,
+        "text": "Transport owners pay $20 per transport business. Level 2: Prices up 1.",
+        "logic": "Each player pays $20 x (transport businesses they own) to Bank.",
+        "economy": 0,
+        "level2": {
+          "prices": 1
+        },
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "transport"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N18",
+        "deck": "news",
+        "title": "Drought pushes up food prices",
+        "image": "N18",
+        "level": 1,
+        "text": "Takeaway owners pay $20 per Takeaway. Level 2: Prices up 1.",
+        "logic": "Each player pays $20 x (takeaway businesses they own) to Bank.",
+        "economy": 0,
+        "level2": {
+          "prices": 1
+        },
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "takeaway"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N19",
+        "deck": "news",
+        "title": "Minimum wage goes up",
+        "image": "N19",
+        "level": 1,
+        "text": "Every business owner pays $10 per business. Level 2: Wages up 1.",
+        "logic": "Each player pays $10 x (all businesses they own, including transport and sold utilities) to Bank.",
+        "economy": 0,
+        "level2": {
+          "wages": 1
+        },
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 10,
+            "with": "bank",
+            "per": {
+              "all": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "N20",
+        "deck": "news",
+        "title": "Self-checkouts everywhere",
+        "image": "N20",
+        "level": 1,
+        "text": "The Cashier and the Retail Assistant lose their jobs.",
+        "logic": "Players holding J03 Cashier or J01 Retail Assistant who are employed become looking for work (Volunteer card L12 may be handed in).",
+        "economy": 0,
+        "effect": [
+          {
+            "do": "loseJob",
+            "jobs": [
+              "J03",
+              "J01"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "N21",
+        "deck": "news",
+        "title": "Robots in warehouses and kitchens",
+        "image": "N21",
+        "level": 1,
+        "text": "The Delivery Driver and the Kitchen Hand lose their jobs.",
+        "logic": "Players holding J04 Delivery Driver or J02 Kitchen Hand who are employed become looking for work (L12 may be handed in).",
+        "economy": 0,
+        "effect": [
+          {
+            "do": "loseJob",
+            "jobs": [
+              "J04",
+              "J02"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "N22",
+        "deck": "news",
+        "title": "Tech boom: skilled workers wanted",
+        "image": "N22",
+        "level": 1,
+        "text": "Every Skilled and Professional worker collects $30. Skilled and Professional players looking for work get their jobs back.",
+        "logic": "First: every employed Skilled or Professional worker collects $30 from Bank. Then: every Skilled or Professional player looking for work becomes employed (they do not get the $30).",
+        "economy": 0,
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 30,
+            "with": "bank",
+            "if": "employedSkilledUp"
+          },
+          {
+            "do": "regainJob",
+            "levels": [
+              "skilled",
+              "professional"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "N23",
+        "deck": "news",
+        "title": "Australian dollar falls",
+        "image": "N23",
+        "level": 1,
+        "text": "Mine and Factory owners collect $20 per business, because our exports are cheaper overseas. Level 2: Prices up 1, because imports cost more.",
+        "logic": "Each player collects $20 x (mines + factories they own) from Bank.",
+        "economy": 0,
+        "level2": {
+          "prices": 1
+        },
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "mines",
+                "factories"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "N24",
+        "deck": "news",
+        "title": "Bushfire emergency",
+        "image": "N24",
+        "level": 1,
+        "text": "Treasury pays $100 to the Bank for recovery, borrowing if it must. Market Stall and Fun & Fitness owners pay $20 per business.",
+        "logic": "Treasury pays $100 to Bank (borrow if short). Each player pays $20 x (market_stalls + fun_fitness businesses they own) to Bank.",
+        "economy": 0,
+        "effect": [
+          {
+            "do": "treasuryToBank",
+            "amount": 100
+          },
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "market_stalls",
+                "fun_fitness"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "life": [
+      {
+        "id": "L01",
+        "deck": "life",
+        "title": "Car breaks down",
+        "image": "L01",
+        "level": 1,
+        "text": "Pay $60 to the Bank.",
+        "logic": "Drawer pays $60 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 60,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L02",
+        "deck": "life",
+        "title": "Cracked phone screen",
+        "image": "L02",
+        "level": 1,
+        "text": "Pay $40 to the Bank.",
+        "logic": "Drawer pays $40 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 40,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L03",
+        "deck": "life",
+        "title": "It's your birthday",
+        "image": "L03",
+        "level": 1,
+        "text": "Every player gives you $10.",
+        "logic": "Every other player pays the drawer $10.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "others",
+            "amount": 10,
+            "with": "drawer"
+          }
+        ]
+      },
+      {
+        "id": "L04",
+        "deck": "life",
+        "title": "Sold your old bike online",
+        "image": "L04",
+        "level": 1,
+        "text": "Collect $30 from the Bank.",
+        "logic": "Drawer collects $30 from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 30,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L05",
+        "deck": "life",
+        "title": "Tax refund",
+        "image": "L05",
+        "level": 1,
+        "text": "Collect $40 from Treasury.",
+        "logic": "Drawer collects $40 from Treasury (borrow if short).",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 40,
+            "with": "treasury"
+          }
+        ]
+      },
+      {
+        "id": "L06",
+        "deck": "life",
+        "title": "Sick for a week",
+        "image": "L06",
+        "level": 1,
+        "text": "Entry job: lose $50, because casual workers get no sick pay. Skilled or Professional: you get paid sick leave, so nothing happens.",
+        "logic": "If drawer is employed in an Entry job: pays $50 to Bank. Otherwise nothing.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 50,
+            "with": "bank",
+            "if": "employedEntry"
+          }
+        ]
+      },
+      {
+        "id": "L07",
+        "deck": "life",
+        "title": "Promotion at work",
+        "image": "L07",
+        "level": 1,
+        "text": "If you have a job, collect $50 from the Bank.",
+        "logic": "If drawer is employed: collects $50 from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 50,
+            "with": "bank",
+            "if": "employed"
+          }
+        ]
+      },
+      {
+        "id": "L08",
+        "deck": "life",
+        "title": "Speeding fine",
+        "image": "L08",
+        "level": 1,
+        "text": "Pay $100 to Treasury.",
+        "logic": "Drawer pays $100 to Treasury.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 100,
+            "with": "treasury"
+          }
+        ]
+      },
+      {
+        "id": "L09",
+        "deck": "life",
+        "title": "Scam text message",
+        "image": "L09",
+        "level": 1,
+        "text": "If you have more than $300 in cash, the scammer takes $100 (pay the Bank). Never click links in texts.",
+        "logic": "Ask the drawer: more than $300 cash? Yes: pays $100 to Bank. Savings are safe.",
+        "inputs": [
+          "askCashOver300"
+        ],
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 100,
+            "with": "bank",
+            "ask": "askCashOver300"
+          }
+        ]
+      },
+      {
+        "id": "L10",
+        "deck": "life",
+        "title": "Buy now, pay later trap",
+        "image": "L10",
+        "level": 1,
+        "text": "Pay $60 to the Bank: $50 for the shoes and a $10 late fee.",
+        "logic": "Drawer pays $60 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 60,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L11",
+        "deck": "life",
+        "title": "Cheaper phone plan",
+        "image": "L11",
+        "level": 1,
+        "text": "You shopped around. Collect $20 from the Bank.",
+        "logic": "Drawer collects $20 from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 20,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L12",
+        "deck": "life",
+        "title": "Volunteer at the community garden",
+        "image": "L12",
+        "level": 1,
+        "text": "KEEP. Next time you lose your job, hand this in to get it back straight away. Someone gave you a reference.",
+        "logic": "Drawer keeps it. The next time they would lose their job (any cause), offer to hand it in: job kept, card returns to the deck.",
+        "keep": true,
+        "effect": [
+          {
+            "do": "keep",
+            "saveJob": true
+          }
+        ]
+      },
+      {
+        "id": "L13",
+        "deck": "life",
+        "title": "Move into a share house",
+        "image": "L13",
+        "level": 1,
+        "text": "KEEP. Pay $10 less living costs at every Payday.",
+        "logic": "Drawer keeps it for the rest of the game: living costs -$10 at every Payday.",
+        "keep": true,
+        "effect": [
+          {
+            "do": "keep",
+            "livingAdjust": -10
+          }
+        ]
+      },
+      {
+        "id": "L14",
+        "deck": "life",
+        "title": "Rent goes up",
+        "image": "L14",
+        "level": 1,
+        "text": "Pay $40 to the Bank.",
+        "logic": "Drawer pays $40 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 40,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L15",
+        "deck": "life",
+        "title": "Free online course",
+        "image": "L15",
+        "level": 1,
+        "text": "KEEP. Hand this in to do TAFE with no fee.",
+        "logic": "Drawer keeps it. When they enrol in TAFE, offer to hand it in: no fee. Card returns to the deck.",
+        "keep": true,
+        "effect": [
+          {
+            "do": "keep",
+            "freeTafe": true
+          }
+        ]
+      },
+      {
+        "id": "L16",
+        "deck": "life",
+        "title": "Dentist visit",
+        "image": "L16",
+        "level": 1,
+        "text": "Pay $80 to the Bank. Medicare does not cover most dental care.",
+        "logic": "Drawer pays $80 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 80,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L17",
+        "deck": "life",
+        "title": "Side hustle",
+        "image": "L17",
+        "level": 1,
+        "text": "You sell drawings online. Collect $40 from the Bank.",
+        "logic": "Drawer collects $40 from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 40,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L18",
+        "deck": "life",
+        "title": "Broken arm",
+        "image": "L18",
+        "level": 1,
+        "text": "Medicare covers the hospital. Pay only $20 to the Bank. Without public health care this could cost thousands.",
+        "logic": "Drawer pays $20 to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 20,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "L19",
+        "deck": "life",
+        "title": "Insurance offer",
+        "image": "L19",
+        "level": 1,
+        "text": "Pay $30 to the Bank to KEEP this card, or put it back. It covers your next Car Crash or Fire card.",
+        "logic": "Ask: buy insurance? Yes: drawer pays $30 to Bank and keeps the card. It cancels the next L20 Car Crash or M13 Fire payment, then returns to the deck.",
+        "keep": true,
+        "inputs": [
+          "askBuyInsurance"
+        ],
+        "effect": [
+          {
+            "do": "keep",
+            "ask": "askBuyInsurance",
+            "cost": 30,
+            "with": "bank",
+            "cancels": [
+              "L20",
+              "M13"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "L20",
+        "deck": "life",
+        "title": "Car crash",
+        "image": "L20",
+        "level": 1,
+        "text": "Pay $150 to the Bank, unless you hand in an Insurance card.",
+        "logic": "Drawer pays $150 to Bank unless they hold L19: then hand it in and pay nothing.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 150,
+            "with": "bank",
+            "unlessKeep": "L19"
+          }
+        ]
+      }
+    ],
+    "market": [
+      {
+        "id": "M01",
+        "deck": "market",
+        "title": "Video goes viral",
+        "image": "M01",
+        "level": 1,
+        "text": "Takeaway owners collect $30 per Takeaway.",
+        "logic": "Each player collects $30 x (takeaway they own) from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 30,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "takeaway"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M02",
+        "deck": "market",
+        "title": "Health inspector visit",
+        "image": "M02",
+        "level": 1,
+        "text": "Takeaway owners pay $20 per Takeaway to Treasury.",
+        "logic": "Each player pays $20 x (takeaway they own) to Treasury.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "treasury",
+            "per": {
+              "industries": [
+                "takeaway"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M03",
+        "deck": "market",
+        "title": "Equipment breaks down",
+        "image": "M03",
+        "level": 1,
+        "text": "You pay $20 to the Bank for each business you own.",
+        "logic": "Drawer pays $20 x (all businesses they own) to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "all": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "M04",
+        "deck": "market",
+        "title": "Suppliers raise prices",
+        "image": "M04",
+        "level": 1,
+        "text": "Food Shop and Takeaway owners pay $20 per business to the Bank.",
+        "logic": "Each player pays $20 x (food_shops + takeaway they own) to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "food_shops",
+                "takeaway"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M05",
+        "deck": "market",
+        "title": "Big chain store opens nearby",
+        "image": "M05",
+        "level": 1,
+        "text": "Market Stall and Food Shop owners pay $20 per business to the Bank. Small shops lose customers.",
+        "logic": "Each player pays $20 x (market_stalls + food_shops they own) to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "market_stalls",
+                "food_shops"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M06",
+        "deck": "market",
+        "title": "Online shopping takes off",
+        "image": "M06",
+        "level": 1,
+        "text": "Clothing Store and Electronics Store owners pay $30 each. Transport owners collect $20 per transport business.",
+        "logic": "Each player pays $30 x (clothing_store + electronics_store they own) to Bank. Each player collects $20 x (transport they own) from Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 30,
+            "with": "bank",
+            "per": {
+              "businesses": [
+                "clothing_store",
+                "electronics_store"
+              ]
+            }
+          },
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 20,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "transport"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M07",
+        "deck": "market",
+        "title": "Workplace safety fine",
+        "image": "M07",
+        "level": 1,
+        "text": "Factory and Mine owners pay $40 per business to Treasury.",
+        "logic": "Each player pays $40 x (factories + mines they own) to Treasury. Law P15 in force: $20 instead.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 40,
+            "with": "treasury",
+            "per": {
+              "industries": [
+                "factories",
+                "mines"
+              ]
+            },
+            "lawAmount": {
+              "P15": 20
+            }
+          }
+        ]
+      },
+      {
+        "id": "M08",
+        "deck": "market",
+        "title": "Pollution clean-up",
+        "image": "M08",
+        "level": 1,
+        "text": "Factory and Mine owners pay $30 per business to Treasury. The river was polluted and someone has to pay to fix it.",
+        "logic": "Each player pays $30 x (factories + mines they own) to Treasury. Law P15 in force: $15 instead.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 30,
+            "with": "treasury",
+            "per": {
+              "industries": [
+                "factories",
+                "mines"
+              ]
+            },
+            "lawAmount": {
+              "P15": 15
+            }
+          }
+        ]
+      },
+      {
+        "id": "M09",
+        "deck": "market",
+        "title": "Small business grant",
+        "image": "M09",
+        "level": 1,
+        "text": "If you own a Market Stall or Food Shop, collect $50 from Treasury.",
+        "logic": "If drawer owns at least one market_stalls or food_shops business: collects $50 once from Treasury (borrow if short).",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "drawer",
+            "amount": 50,
+            "with": "treasury",
+            "if": {
+              "ownsAnyIn": [
+                "market_stalls",
+                "food_shops"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M10",
+        "deck": "market",
+        "title": "Staff shortage",
+        "image": "M10",
+        "level": 1,
+        "text": "Every business owner pays $10 per business to the Bank for overtime.",
+        "logic": "Each player pays $10 x (all businesses they own) to Bank.",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "each",
+            "amount": 10,
+            "with": "bank",
+            "per": {
+              "all": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "M11",
+        "deck": "market",
+        "title": "Big overseas order",
+        "image": "M11",
+        "level": 1,
+        "text": "Factory owners collect $40 per Factory.",
+        "logic": "Each player collects $40 x (factories they own) from Bank.",
+        "effect": [
+          {
+            "do": "collect",
+            "who": "each",
+            "amount": 40,
+            "with": "bank",
+            "per": {
+              "industries": [
+                "factories"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "M12",
+        "deck": "market",
+        "title": "Business course",
+        "image": "M12",
+        "level": 1,
+        "text": "You may add an Extra Site to one business now for half price.",
+        "logic": "Optional: drawer picks one of their businesses with fewer than 2 Extra Sites (not transport or utilities) and adds a site for half its Extra Site cost, paid to Bank.",
+        "inputs": [
+          "chooseOwnBusiness"
+        ],
+        "effect": [
+          {
+            "do": "discountSite",
+            "fraction": 0.5
+          }
+        ]
+      },
+      {
+        "id": "M13",
+        "deck": "market",
+        "title": "Fire!",
+        "image": "M13",
+        "level": 1,
+        "text": "If you own any business, pay $100 to the Bank, unless you hand in an Insurance card.",
+        "logic": "If drawer owns any business: pays $100 to Bank unless they hold L19 (hand it in, pay nothing).",
+        "effect": [
+          {
+            "do": "pay",
+            "who": "drawer",
+            "amount": 100,
+            "with": "bank",
+            "unlessKeep": "L19",
+            "if": "ownsAnyBusiness"
+          }
+        ]
+      },
+      {
+        "id": "M14",
+        "deck": "market",
+        "title": "Bargain for sale",
+        "image": "M14",
+        "level": 1,
+        "text": "You may buy any business nobody owns for half its price.",
+        "logic": "Optional: drawer picks any unowned business (not utilities) and buys it for half its price, paid to Bank.",
+        "inputs": [
+          "chooseUnownedBusiness"
+        ],
+        "effect": [
+          {
+            "do": "bargain",
+            "fraction": 0.5
+          }
+        ]
+      },
+      {
+        "id": "M15",
+        "deck": "market",
+        "title": "Supply deal",
+        "image": "M15",
+        "level": 1,
+        "text": "Choose another player who owns a business. You both collect $30 from the Bank. Working together helps both of you.",
+        "logic": "Drawer picks another player who owns at least one business. Both collect $30 from Bank. If nobody else owns a business, nothing happens.",
+        "inputs": [
+          "chooseOtherOwner"
+        ],
+        "effect": [
+          {
+            "do": "supplyBonus",
+            "amount": 30,
+            "with": "bank"
+          }
+        ]
+      },
+      {
+        "id": "M16",
+        "deck": "market",
+        "title": "ACCC investigation",
+        "image": "M16",
+        "level": 1,
+        "text": "Anyone who owns every business in an industry pays $100 to Treasury. Level 3: they must also set Standard prices until their next Payday.",
+        "logic": "For each player and each industry (not utilities) where they own every business: pay $100 to Treasury. Level 3: those businesses are forced to Standard price until that owner's next Payday.",
+        "effect": [
+          {
+            "do": "monopolyFine",
+            "amount": 100,
+            "with": "treasury",
+            "level3ForceStandard": true
+          }
+        ]
+      }
+    ],
+    "policy": [
+      {
+        "id": "P01",
+        "deck": "policy",
+        "title": "Raise the minimum wage",
+        "image": "P01",
+        "level": 2,
+        "text": "Entry workers take home $20 more. At Payday, business owners pay $10 per business.",
+        "logic": "Law. Employed Entry workers: take-home +$20 (from Bank). At each player's Payday: pay $10 x (all businesses they own) to Bank.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "entryTakeHomeBonus": 20
+          },
+          "payday": [
+            {
+              "do": "pay",
+              "who": "drawer",
+              "amount": 10,
+              "with": "bank",
+              "per": {
+                "all": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "P02",
+        "deck": "policy",
+        "title": "Cut income tax",
+        "image": "P02",
+        "level": 2,
+        "text": "Every worker takes home $10 more, and Treasury gets $10 less from each.",
+        "logic": "Law. Employed workers: take-home +$10 and tax -$10 (Bank pays the same total).",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "takeHomeBonus": 10,
+            "taxCut": 10
+          }
+        }
+      },
+      {
+        "id": "P03",
+        "deck": "policy",
+        "title": "Raise company tax",
+        "image": "P03",
+        "level": 2,
+        "text": "Tax Time costs $30 per business.",
+        "logic": "Law. Tax Time is $30 per business.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "companyTaxPerBusiness": 30
+          }
+        }
+      },
+      {
+        "id": "P04",
+        "deck": "policy",
+        "title": "Cut company tax",
+        "image": "P04",
+        "level": 2,
+        "text": "Tax Time costs $10 per business.",
+        "logic": "Law. Tax Time is $10 per business.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "companyTaxPerBusiness": 10
+          }
+        }
+      },
+      {
+        "id": "P05",
+        "deck": "policy",
+        "title": "Free TAFE",
+        "image": "P05",
+        "level": 2,
+        "text": "TAFE has no fee.",
+        "logic": "Law. TAFE fee is $0.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "tafeFee": 0
+          }
+        }
+      },
+      {
+        "id": "P06",
+        "deck": "policy",
+        "title": "Build it now",
+        "image": "P06",
+        "level": 2,
+        "text": "Treasury builds the next Public Project now, borrowing if it must. This card then goes to the bottom of the deck instead of staying as a law.",
+        "logic": "One-off if passed: Treasury builds the next Public Project now (borrow if short). Not kept as a law.",
+        "isLaw": false,
+        "effect": {
+          "oneOff": [
+            {
+              "do": "buildProject"
+            }
+          ]
+        }
+      },
+      {
+        "id": "P07",
+        "deck": "policy",
+        "title": "Raise JobSeeker",
+        "image": "P07",
+        "level": 2,
+        "text": "Players looking for work collect $70.",
+        "logic": "Law. JobSeeker is $70.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "jobSeeker": 70
+          }
+        }
+      },
+      {
+        "id": "P08",
+        "deck": "policy",
+        "title": "Cut JobSeeker",
+        "image": "P08",
+        "level": 2,
+        "text": "Players looking for work collect $30.",
+        "logic": "Law. JobSeeker is $30.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "jobSeeker": 30
+          }
+        }
+      },
+      {
+        "id": "P09",
+        "deck": "policy",
+        "title": "Carbon price",
+        "image": "P09",
+        "level": 2,
+        "text": "At Payday, Factory and Mine owners pay $20 per business to Treasury. The Solar Panel Factory owner collects $20 instead.",
+        "logic": "Law. At each player's Payday: pay $20 x (factories + mines they own, excluding solar_factory) to Treasury; if they own solar_factory, collect $20 from Treasury.",
+        "isLaw": true,
+        "effect": {
+          "payday": [
+            {
+              "do": "pay",
+              "who": "drawer",
+              "amount": 20,
+              "with": "treasury",
+              "per": {
+                "industries": [
+                  "factories",
+                  "mines"
+                ],
+                "except": [
+                  "solar_factory"
+                ]
+              }
+            },
+            {
+              "do": "collect",
+              "who": "drawer",
+              "amount": 20,
+              "with": "treasury",
+              "per": {
+                "businesses": [
+                  "solar_factory"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "P10",
+        "deck": "policy",
+        "title": "Sell the utilities",
+        "image": "P10",
+        "level": 2,
+        "text": "Auction the Power Company and Water Company now, bidding from $100. Owners collect the $20 bills. They stay sold even if this law is later removed.",
+        "logic": "Law. Immediately auction power_company then water_company (min bid $100, winner pays Treasury; no bid = stays government). Owned utilities: lander pays owner $20; owner gets $20 profit at every Payday. Stay sold if the law is removed.",
+        "inputs": [
+          "auction"
+        ],
+        "isLaw": true,
+        "effect": {
+          "oneOff": [
+            {
+              "do": "auctionUtilities",
+              "businesses": [
+                "power_company",
+                "water_company"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "P11",
+        "deck": "policy",
+        "title": "Raise GST",
+        "image": "P11",
+        "level": 2,
+        "text": "Every player pays $10 more living costs, and that $10 goes to Treasury.",
+        "logic": "Law. Living costs +$10 at every Payday; that $10 goes to Treasury, the rest to Bank.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "livingToTreasury": 10
+          }
+        }
+      },
+      {
+        "id": "P12",
+        "deck": "policy",
+        "title": "Tax on imports",
+        "image": "P12",
+        "level": 2,
+        "text": "At Payday, Factory owners collect $20 per Factory. Living costs go up $10.",
+        "logic": "Law. At each player's Payday: collect $20 x (factories they own) from Bank. Living costs +$10 (to Bank).",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "livingAdjust": 10
+          },
+          "payday": [
+            {
+              "do": "collect",
+              "who": "drawer",
+              "amount": 20,
+              "with": "bank",
+              "per": {
+                "industries": [
+                  "factories"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "P13",
+        "deck": "policy",
+        "title": "Cap food prices",
+        "image": "P13",
+        "level": 2,
+        "text": "Food Shops and the Supermarket charge customers $10 less. Level 3: Budget price only.",
+        "logic": "Law. Food Shops and Supermarket customer prices -$10 (min $0). Level 3: these businesses can only charge Budget.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "customerPriceCut": 10,
+            "capIndustries": [
+              "food_shops"
+            ],
+            "capBusinesses": [
+              "supermarket"
+            ],
+            "level3Clip": "budget"
+          }
+        }
+      },
+      {
+        "id": "P14",
+        "deck": "policy",
+        "title": "Tax on big fortunes",
+        "image": "P14",
+        "level": 2,
+        "text": "At Payday, anyone with more than $1,000 in cash and Savings pays $50 to Treasury.",
+        "logic": "Law. At each player's Payday ask: cash + Savings over $1,000? (app knows Savings, ask about cash) Yes: pay $50 to Treasury.",
+        "inputs": [
+          "askCashPlusSavingsOver1000"
+        ],
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "fortuneThreshold": 1000,
+            "fortuneTax": 50
+          }
+        }
+      },
+      {
+        "id": "P15",
+        "deck": "policy",
+        "title": "Cut red tape",
+        "image": "P15",
+        "level": 2,
+        "text": "Safety fine and Pollution clean-up cards cost half.",
+        "logic": "Law. M07 and M08 cost half.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "redTape": true
+          }
+        }
+      },
+      {
+        "id": "P16",
+        "deck": "policy",
+        "title": "Free trade deal",
+        "image": "P16",
+        "level": 2,
+        "text": "Living costs go down $10. At Payday, Factory owners pay $10 per Factory.",
+        "logic": "Law. Living costs -$10. At each player's Payday: pay $10 x (factories they own) to Bank.",
+        "isLaw": true,
+        "effect": {
+          "law": {
+            "livingAdjust": -10
+          },
+          "payday": [
+            {
+              "do": "pay",
+              "who": "drawer",
+              "amount": 10,
+              "with": "bank",
+              "per": {
+                "industries": [
+                  "factories"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "startingLife": [
+      {
+        "id": "S01",
+        "deck": "starting_life",
+        "title": "Family can help",
+        "image": "S01",
+        "level": 3,
+        "text": "Start with $700. Your first TAFE or Uni course is free, with no HECS card.",
+        "logic": "Start cash $700. Their first TAFE or Uni enrolment has no fee and no HECS card.",
+        "effect": {
+          "startCash": 700,
+          "freeFirstCourse": true
+        }
+      },
+      {
+        "id": "S02",
+        "deck": "starting_life",
+        "title": "Moved out at 17",
+        "image": "S02",
+        "level": 3,
+        "text": "Start with $200.",
+        "logic": "Start cash $200.",
+        "effect": {
+          "startCash": 200
+        }
+      },
+      {
+        "id": "S03",
+        "deck": "starting_life",
+        "title": "Grew up in a country town",
+        "image": "S03",
+        "level": 3,
+        "text": "Start with $400. TAFE costs you $100 because you must travel.",
+        "logic": "Start cash $400. Their TAFE fee is $100 (unless TAFE is free for them).",
+        "effect": {
+          "startCash": 400,
+          "tafeFee": 100
+        }
+      },
+      {
+        "id": "S04",
+        "deck": "starting_life",
+        "title": "Family business",
+        "image": "S04",
+        "level": 3,
+        "text": "Start with $300 and the Coffee Cart.",
+        "logic": "Start cash $300 and they own coffee_cart.",
+        "effect": {
+          "startCash": 300,
+          "owns": [
+            "coffee_cart"
+          ]
+        }
+      },
+      {
+        "id": "S05",
+        "deck": "starting_life",
+        "title": "Young carer",
+        "image": "S05",
+        "level": 3,
+        "text": "Start with $300. Take home $20 less at every Payday because you work fewer hours.",
+        "logic": "Start cash $300. Take-home pay -$20 at every Payday while employed.",
+        "effect": {
+          "startCash": 300,
+          "takeHomeAdjust": -20
+        }
+      },
+      {
+        "id": "S06",
+        "deck": "starting_life",
+        "title": "Average start",
+        "image": "S06",
+        "level": 3,
+        "text": "Start with $400.",
+        "logic": "Start cash $400. The physical deck has 3 copies of this card.",
+        "effect": {
+          "startCash": 400
+        }
+      }
+    ]
+  },
+  "smallCards": [
+    {
+      "id": "G01",
+      "name": "Loan $200",
+      "copies": 20
+    },
+    {
+      "id": "G02",
+      "name": "Government Bond $200",
+      "copies": 10
+    },
+    {
+      "id": "G03",
+      "name": "HECS",
+      "copies": 6
+    },
+    {
+      "id": "G04",
+      "name": "Bankrupt",
+      "copies": 6
+    },
+    {
+      "id": "G05",
+      "name": "Supply Deal",
+      "copies": 6,
+      "level": 3
+    }
+  ],
+  "cardBacks": {
+    "news": "K01",
+    "life": "K02",
+    "market": "K03",
+    "policy": "K04",
+    "starting_life": "K05",
+    "business": "K06",
+    "job_looking_for_work": "K07",
+    "bank_papers": "K08"
+  },
+  "startingLifeDeck": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S06",
+    "S06"
+  ]
+}
