@@ -33,4 +33,5 @@ The engine still tracks each token's space, because landing and passing PAYDAY d
 - **"Treasury pays X"** borrows Bonds payment by payment. This gives the same number of Bonds as borrowing for the total.
 - **Zero lines are kept** in Payday itemising (for example "Gym $0", "Projects $0") so every step shows.
 - **Budget night** (teacher menu) is Level 2 and up, because Policy cards are Level 2.
+- **Game end:** setup offers 5 Paydays *or* a timer, so choosing a timer turns the Payday ending off. When the timer reaches 0 the app sets "last round", and the game ends when the round comes back to the Start Player.
 - **Waiting for a job card after study** (`pendingUpgrade`) is implemented as specified, but cannot happen with 6 or fewer players: there are 6 cards per level and each player holds one card, so one is always free.

@@ -70,3 +70,26 @@ export function NumberPad({ value, onChange, max = 99990 }: { value: number; onC
     </div>
   );
 }
+
+/** A number with chunky − / + buttons for each step size (largest step outermost). */
+export function Stepper({
+  value, onChange, steps = [1], min = 0, max = Infinity, format = (n: number) => String(n),
+}: { value: number; onChange: (n: number) => void; steps?: number[]; min?: number; max?: number; format?: (n: number) => string }) {
+  const desc = [...steps].sort((a, b) => b - a);
+  const clamp = (n: number) => Math.max(min, Math.min(max, n));
+  return (
+    <span className="stepper">
+      {desc.map((s) => (
+        <Btn key={`-${s}`} tone="ghost" disabled={value - s < min} onClick={() => onChange(clamp(value - s))} aria-label={`Minus ${s}`}>
+          −{steps.length > 1 ? s : ''}
+        </Btn>
+      ))}
+      <span className="num stepper__n">{format(value)}</span>
+      {[...desc].reverse().map((s) => (
+        <Btn key={`+${s}`} tone="ghost" disabled={value + s > max} onClick={() => onChange(clamp(value + s))} aria-label={`Plus ${s}`}>
+          +{steps.length > 1 ? s : ''}
+        </Btn>
+      ))}
+    </span>
+  );
+}

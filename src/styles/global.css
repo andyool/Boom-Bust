@@ -28,6 +28,9 @@ body {
 }
 h1, h2, h3 { font-family: 'Poppins', system-ui, sans-serif; font-weight: 700; margin: 0; }
 input { font: inherit; -webkit-user-select: text; user-select: text; }
+/* iPad: no long-press callouts or image dragging on art and buttons. */
+img, button, [role='button'] { -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; }
 
 /* The whole app sits inside a navy rim, like the board. */
 .frame {

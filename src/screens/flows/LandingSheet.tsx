@@ -1,14 +1,15 @@
 // Landing sheets (SPEC 5.4): one per kind of space. Each previews the engine action, then confirms it.
 import { useState } from 'react';
 import {
-  ACTION_CARD, BUSINESS, C, DATA, INDUSTRY, POLICY, SPACES, businessesIn, canAddSite, chargeFor, currentPlayer, effectiveClip,
+  ACTION_CARD, BUSINESS, C, DATA, INDUSTRY, SPACES, businessesIn, canAddSite, chargeFor, currentPlayer, effectiveClip,
   employed, getPlayer, holdsCard, jobLevel, owned, rentQuote, rollLoses, studyOptions, VOLUNTEER_CARD,
-  type Action, type AuctionResult, type Game, type Space,
+  type Action, type Game, type Space,
 } from '../../engine';
 import { DieRow, NumberPad } from '../../ui/inputs';
 import { Art, Btn, Money, Notes, Sheet, Token } from '../../ui/kit';
 import { Party } from '../../ui/money';
 import { CardPicker, DECK_BACK } from './CardPicker';
+import { PolicyVote } from './LawFlow';
 import { PickBusiness, PickPlayer, Preview, WrongSpace, YesNo, act } from './common';
 import './flows.css';
 
@@ -466,75 +467,8 @@ function JobCutFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
 }
 
 // ---------------------------------------------------------------------------
-// Parliament (Level 2+). Debate timers arrive in stage 5.
+// Parliament (Level 2+)
 
 function ParliamentFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
-  const [cardId, setCardId] = useState<string | null>(null);
-  const [remove, setRemove] = useState<string | null>(null);
-  const [auctions, setAuctions] = useState<AuctionResult[]>([]);
-
-  if (!cardId) {
-    return (
-      <Sheet title={<Head game={game} space={space} />} onClose={onClose} footer={<WrongSpace onClick={onWrongSpace} />}>
-        <CardPicker game={game} deck="policy" onPick={setCardId} />
-      </Sheet>
-    );
-  }
-  const card = POLICY(cardId);
-  const full = card.isLaw && game.laws.length >= C.maxLaws;
-  const sells = card.effect.oneOff?.find((op) => op.do === 'auctionUtilities');
-  const utilities = sells && 'businesses' in sells ? sells.businesses.filter((id) => game.holdings[id].ownerId === null) : [];
-  const base = { type: 'parliament' as const, cardId };
-  const passAction: Action = { ...base, passed: true, ...(remove ? { removeLawId: remove } : {}), auctions };
-  const badBid = auctions.some((a) => a.winnerId && a.bid < C.utilityAuctionMinBid);
-
-  return (
-    <Sheet title={<Head game={game} space={space} />} onClose={onClose}
-      footer={
-        <>
-          <Btn tone="ghost" onClick={() => setCardId(null)}>Back</Btn>
-          <span className="grow" />
-          <Btn tone="coral" big onClick={() => act({ ...base, passed: false }, onClose)}>Failed</Btn>
-          <Btn tone="green" big disabled={(full && !remove) || badBid} onClick={() => act(passAction, onClose)}>Passed</Btn>
-        </>
-      }>
-      <div className="flow-row flow-row--top">
-        <Art id={card.id} size="lg" className="flow-card flow-card--big" alt={card.title} />
-        <div className="flow-col">
-          {full && (
-            <Question icon="I05" text="Remove one">
-              <div className="thumbs thumbs--cards">
-                {game.laws.map((l) => (
-                  <button key={l.id} type="button" className={`pick-card${remove === l.id ? ' is-on' : ''}`} onClick={() => setRemove(l.id)}>
-                    <Art id={l.id} alt="" />
-                  </button>
-                ))}
-              </div>
-            </Question>
-          )}
-          {utilities.map((id) => (
-            <UtilityAuction key={id} game={game} businessId={id}
-              value={auctions.find((x) => x.businessId === id)}
-              onChange={(r) => setAuctions((xs) => [...xs.filter((x) => x.businessId !== id), r])} />
-          ))}
-        </div>
-      </div>
-    </Sheet>
-  );
-}
-
-function UtilityAuction({ game, businessId, value, onChange }: { game: Game; businessId: string; value?: AuctionResult; onChange: (r: AuctionResult) => void }) {
-  const b = BUSINESS[businessId];
-  const bid = value?.bid ?? 0;
-  return (
-    <div className="question">
-      <span className="question__q">
-        <Art id={b.tile} alt={b.name} />
-        Auction
-      </span>
-      <PickPlayer game={game} ids={game.players.map((p) => p.id)} value={value?.winnerId} size={52}
-        onPick={(id) => onChange({ businessId, winnerId: value?.winnerId === id ? null : id, bid })} />
-      <NumberPad value={bid} onChange={(n) => onChange({ businessId, winnerId: value?.winnerId ?? null, bid: n })} />
-    </div>
-  );
+  return <PolicyVote game={game} title={<Head game={game} space={space} />} mode="parliament" onClose={onClose} footerLeft={<WrongSpace onClick={onWrongSpace} />} />;
 }

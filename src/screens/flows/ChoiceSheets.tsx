@@ -1,12 +1,12 @@
 // Payday step 7 Choices (SPEC 7.8): Extra Sites, study, Savings, Level 3 price clips and Supply Deals.
 import { useState } from 'react';
 import {
-  BUSINESS, C, INDUSTRY, canAddSite, chargeFor, getPlayer, owned, ownsAll, studyOptions,
+  BUSINESS, C, INDUSTRY, canAddSite, chargeFor, getPlayer, linked, owned, ownsAll, studyOptions,
   type Action, type Clip, type Game,
 } from '../../engine';
 import { Art, Btn, Money, Sheet, Token } from '../../ui/kit';
 import { StudyButton } from './LandingSheet';
-import { PickBusiness, Preview, YesNo, act } from './common';
+import { PickBusiness, PickPlayer, Preview, YesNo, act } from './common';
 import './flows.css';
 
 function Title({ game, playerId, icon, label }: { game: Game; playerId: string; icon: string; label: string }) {
@@ -183,3 +183,44 @@ export function DealsSheet({ game, playerId, onClose }: Props) {
   );
 }
 
+
+/** DEAL (Level 3): two players sign a Supply Deal between businesses in linked industries. */
+export function NewDealSheet({ game, onClose }: { game: Game; onClose: () => void }) {
+  const [a, setA] = useState<string | null>(game.players[game.turnIndex].id);
+  const [aBiz, setABiz] = useState<string | null>(null);
+  const [b, setB] = useState<string | null>(null);
+  const [bBiz, setBBiz] = useState<string | null>(null);
+  const dealsOf = (pid: string) => game.supplyDeals.filter((d) => d.a === pid || d.b === pid).length;
+  const canSign = (pid: string) => owned(game, pid).length > 0 && dealsOf(pid) < C.maxSupplyDealsPerPlayer;
+  const players = game.players.filter((p) => canSign(p.id)).map((p) => p.id);
+  const aIds = a ? owned(game, a).map((h) => h.businessId) : [];
+  const bIds = b && aBiz ? owned(game, b).map((h) => h.businessId).filter((id) => linked(BUSINESS[aBiz].industry, BUSINESS[id].industry)) : [];
+  const left = C.supplyDealCards - game.supplyDeals.length;
+  const ready = a && b && aBiz && bBiz && a !== b && left > 0;
+  return (
+    <Sheet title={<Title game={game} playerId={a ?? game.players[game.turnIndex].id} icon="G05" label="Deal" />} onClose={onClose}
+      footer={<Btn tone="green" big disabled={!ready} onClick={() => ready && act({ type: 'deal', a: a!, aBiz: aBiz!, b: b!, bBiz: bBiz! }, onClose)}>Deal</Btn>}>
+      <div className="deal">
+        <div className="deal__side">
+          <PickPlayer game={game} ids={players} value={a} size={56} onPick={(id) => (setA(id), setABiz(null), setB(null), setBBiz(null))} />
+          {a && <PickBusiness ids={aIds} value={aBiz} onPick={(id) => (setABiz(id), setBBiz(null))} />}
+        </div>
+        <div className="deal__mid">
+          <Art id="G05" alt="Supply Deal" />
+          <span className="num deal__left">{left} / {C.supplyDealCards}</span>
+          {ready && (
+            <span className="cost-to">
+              <Money amount={C.supplyDealPerPayday} />
+              <span aria-hidden>×2</span>
+              <Art id="C01" alt="each Payday" />
+            </span>
+          )}
+        </div>
+        <div className="deal__side">
+          <PickPlayer game={game} ids={players.filter((id) => id !== a)} value={b} size={56} onPick={(id) => (setB(id), setBBiz(null))} />
+          {b && aBiz && (bIds.length ? <PickBusiness ids={bIds} value={bBiz} onPick={setBBiz} /> : <span className="tag tag--coral">Not linked</span>)}
+        </div>
+      </div>
+    </Sheet>
+  );
+}

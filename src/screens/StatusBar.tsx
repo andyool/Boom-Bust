@@ -1,17 +1,43 @@
 // The state the app tracks for the table: economy, Level 2 tracks, Treasury, Bonds, projects and laws.
 // Not a copy of the board: players keep the physical markers; this is what the app calculates with.
 import { DATA, ECON, lawsInOrder, type Game } from '../engine';
+import { useRef, useState } from 'react';
 import { Art, Money, econIcon } from '../ui/kit';
+import { mmss } from './useClock';
 import './status.css';
 
-export function StatusBar({ game, onLaws }: { game: Game; onLaws?: () => void }) {
+const HOLD_MS = 2000;
+
+export function StatusBar({
+  game, onLaws, onTeacher, timeLeft,
+}: { game: Game; onLaws?: () => void; onTeacher?: () => void; timeLeft?: number | null }) {
+  const [holding, setHolding] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const start = () => {
+    setHolding(true);
+    timer.current = setTimeout(() => (setHolding(false), onTeacher?.()), HOLD_MS);
+  };
+  const stop = () => {
+    clearTimeout(timer.current);
+    setHolding(false);
+  };
   const l2 = game.level >= 2;
   const econAt = ECON.indexOf(game.economy);
   return (
     <header className="status">
       <div className="status__brand">
-        <Art id="X02" className="status__logo" alt="Boom & Bust" />
-        <span className={`status__level status__level--${game.level} num`}>L{game.level}</span>
+        {/* Press and hold the logo for 2 seconds: teacher menu (SPEC 5.12). */}
+        <span className={`status__hold${holding ? ' is-holding' : ''}`} onPointerDown={start} onPointerUp={stop} onPointerLeave={stop} onPointerCancel={stop}
+          onContextMenu={(e) => e.preventDefault()} role="button" aria-label="Teacher menu (hold)">
+          <Art id="X02" className="status__logo" alt="Boom & Bust" />
+        </span>
+        <span className="status__meta">
+          <span className={`status__level status__level--${game.level} num`}>L{game.level}</span>
+          {timeLeft !== null && timeLeft !== undefined && game.phase.name !== 'over' && (
+            <span className={`status__clock num${timeLeft < 300 ? ' is-low' : ''}`}>⏱ {mmss(timeLeft)}</span>
+          )}
+          {game.flags.lastRound && game.phase.name !== 'over' && <span className="status__last">Last round</span>}
+        </span>
       </div>
 
       <div className="status__item status__econ" aria-label={`Economy ${game.economy}`}>

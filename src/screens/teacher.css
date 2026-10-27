@@ -1,0 +1,55 @@
+.teacher { display: grid; grid-template-columns: 190px 1fr; gap: 16px; min-height: 560px; }
+.teacher__nav { display: flex; flex-direction: column; gap: 6px; }
+.teacher__tab {
+  display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 6px 10px;
+  border: 2px solid var(--navy); border-radius: 14px; background: var(--cream); color: var(--navy);
+  font: 700 18px 'Poppins', sans-serif; text-align: left; cursor: pointer;
+}
+.teacher__tab img { height: 40px; width: 40px; object-fit: cover; border-radius: 6px; }
+.teacher__tab.is-on { background: var(--navy); color: var(--cream); }
+.teacher__body { min-width: 0; }
+
+.t-col { display: flex; flex-direction: column; gap: 10px; }
+.t-tabs { display: flex; gap: 10px; }
+.t-tabs .btn img { height: 30px; width: 30px; border-radius: 5px; object-fit: cover; }
+.t-row { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 12px; padding: 6px 10px; border: 2px solid var(--navy); border-radius: 14px; background: #fffaf0; }
+.t-row__label { display: flex; align-items: center; gap: 8px; font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; }
+.t-row__label img { height: 36px; width: 36px; object-fit: cover; border-radius: 6px; }
+.t-row__ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.t-row__ctl .btn { min-width: 64px; padding: 6px 12px; font-size: 18px; }
+.t-row__ctl .btn img { height: 30px; width: 30px; border-radius: 5px; }
+.t-row .stepper { gap: 8px; }
+.t-row .stepper .btn { width: auto; min-width: 64px; font-size: 18px; }
+.t-row .stepper__n { font-size: 26px; min-width: 100px; }
+.t-row .yes-no .btn { min-width: 110px; min-height: 56px; font-size: 22px; }
+
+.t-icon { padding: 0; border: 3px solid transparent; border-radius: 10px; background: none; cursor: pointer; }
+.t-icon img { height: 56px; width: auto; border-radius: 8px; display: block; }
+.t-icon.is-on { border-color: var(--mustard); }
+.t-icon.is-off img { opacity: 0.3; filter: grayscale(1); }
+.t-card { position: relative; padding: 0; border: 0; background: none; cursor: pointer; }
+.t-card img { height: 84px; width: auto; border-radius: 5px; display: block; }
+.t-card.is-off img { opacity: 0.3; }
+.t-card.is-on img { box-shadow: 0 0 0 4px var(--mustard); }
+.t-card__x { position: absolute; right: -6px; top: -6px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--coral); color: #fff; font-weight: 700; }
+.t-input { height: var(--touch); border: 3px solid var(--navy); border-radius: 12px; padding: 0 12px; font: 700 22px 'Poppins', sans-serif; color: var(--navy); width: 260px; }
+
+.t-tiles { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; width: 100%; }
+.t-tiles--jobs { grid-template-columns: repeat(9, 1fr); }
+.t-tiles--biz { grid-template-columns: repeat(14, 1fr); }
+.t-tile { position: relative; padding: 0; border: 0; background: none; cursor: pointer; }
+.t-tile img { width: 100%; display: block; border-radius: 4px; box-shadow: 0 0 0 1.5px var(--navy); }
+.t-tile.is-on img { box-shadow: 0 0 0 3px var(--navy), 0 0 0 6px var(--mustard); }
+.t-tile:disabled { opacity: 0.25; cursor: default; }
+.t-tile__owner { position: absolute; right: -4px; bottom: -4px; }
+
+.undo-list { display: flex; flex-direction: column; gap: 6px; }
+.undo-row { display: grid; grid-template-columns: 50px 52px 1fr auto auto; align-items: center; gap: 10px; padding: 4px 10px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; }
+.undo-row__n { font-size: 18px; opacity: 0.6; }
+.undo-row__art { height: 44px; width: 44px; object-fit: cover; border-radius: 5px; display: block; }
+.undo-row__label { font: 700 20px 'Poppins', sans-serif; }
+.undo-row__detail { font-size: 20px; }
+.undo-row .btn { min-height: 52px; font-size: 18px; padding: 4px 14px; }
+
+.rules h3 { font-size: 22px; text-transform: uppercase; margin-top: 4px; }
+.rules ol { margin: 0; padding-left: 26px; display: flex; flex-direction: column; gap: 6px; font-size: 18px; line-height: 1.35; -webkit-user-select: text; user-select: text; }

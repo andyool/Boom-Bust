@@ -10,13 +10,17 @@ import { LandingSheet } from './flows/LandingSheet';
 import { Happenings } from './flows/Happenings';
 import { PaydaySheet } from './flows/PaydaySheet';
 import { RecordSheet } from './flows/RecordSheet';
-import { SavingsSheet } from './flows/ChoiceSheets';
+import { NewDealSheet, SavingsSheet } from './flows/ChoiceSheets';
+import { LawsSheet } from './flows/LawFlow';
 import { SideSheet, TilePicker, type SideKind } from './flows/SideSheets';
 import { PlayerSheet } from './PlayerSheet';
 import { Players } from './Players';
 import { StatusBar } from './StatusBar';
 import { TileSheet } from './TileSheet';
 import { TurnPanel, type MainButton, type SideAction } from './TurnPanel';
+import { EndGame } from './EndGame';
+import { TeacherMenu } from './TeacherMenu';
+import { useTimeLeft } from './useClock';
 import './main.css';
 
 type Open =
@@ -27,6 +31,9 @@ type Open =
   | { kind: 'side'; which: SideKind }
   | { kind: 'savings' }
   | { kind: 'record' }
+  | { kind: 'deal' }
+  | { kind: 'laws' }
+  | { kind: 'teacher' }
   | null;
 
 interface Result {
@@ -38,8 +45,9 @@ interface Result {
 const NOTE_TOAST: Record<string, string> = { yours: 'Yours', rest: 'Rest', visit: 'Visit' };
 
 export function Main() {
-  const { game, actions } = useStore();
+  const { game, actions, startedAt } = useStore();
   const last = actions[actions.length - 1];
+  const timeLeft = useTimeLeft(startedAt, game.settings.timerMinutes);
   const [open, setOpen] = useState<Open>(null);
   const [hiddenAt, setHiddenAt] = useState<number | null>(null);
   const [result, setResult] = useState<Result | null>(null);
@@ -61,6 +69,11 @@ export function Main() {
     if (landed?.note && NOTE_TOAST[landed.note]) toast(NOTE_TOAST[landed.note]);
   }, [actions.length, game.last, last]);
 
+  // Timer ending: when time runs out, the round finishes and the game ends (SPEC 5.11).
+  useEffect(() => {
+    if (timeLeft === 0 && !game.flags.lastRound && game.phase.name !== 'over') store.dispatch({ type: 'lastRound' });
+  }, [timeLeft, game.flags.lastRound, game.phase.name]);
+
   const phase = game.phase.name;
   const flowOpen = !open && !result && hiddenAt !== actions.length && (phase === 'land' || phase === 'payday');
   const hide = () => setHiddenAt(actions.length);
@@ -68,7 +81,7 @@ export function Main() {
   const onAction = (a: SideAction) => {
     if (a === 'record') return setOpen({ kind: 'record' });
     if (a === 'savings') return setOpen({ kind: 'savings' });
-    if (a === 'deal') return toast('Deal: stage 5');
+    if (a === 'deal') return setOpen({ kind: 'deal' });
     setOpen({ kind: 'side', which: a });
   };
 
@@ -86,11 +99,15 @@ export function Main() {
 
   return (
     <div className="main">
-      <StatusBar game={game} />
-      <div className="main__body">
-        <TurnPanel game={game} main={main} last={last && !['setup', 'edit', 'next'].includes(last.type) ? game.last.transfers : []} onAction={onAction} />
-        <Players game={game} onPlayer={(id) => setOpen({ kind: 'player', id })} onBusiness={(id) => setOpen({ kind: 'business', id })} />
-      </div>
+      <StatusBar game={game} timeLeft={timeLeft} onLaws={() => setOpen({ kind: 'laws' })} onTeacher={() => setOpen({ kind: 'teacher' })} />
+      {phase === 'over' ? (
+        <EndGame game={game} onRecord={() => setOpen({ kind: 'record' })} />
+      ) : (
+        <div className="main__body">
+          <TurnPanel game={game} main={main} last={last && !['setup', 'edit', 'next', 'setting'].includes(last.type) ? game.last.transfers : []} onAction={onAction} />
+          <Players game={game} onPlayer={(id) => setOpen({ kind: 'player', id })} onBusiness={(id) => setOpen({ kind: 'business', id })} />
+        </div>
+      )}
 
       {flowOpen && phase === 'land' && <LandingSheet game={game} onClose={hide} onWrongSpace={() => setOpen({ kind: 'wrong' })} />}
       {flowOpen && phase === 'payday' && <PaydaySheet game={game} onClose={hide} />}
@@ -102,6 +119,9 @@ export function Main() {
       {open?.kind === 'side' && <SideSheet game={game} kind={open.which} onClose={close} onOpen={(k) => setOpen({ kind: 'side', which: k })} />}
       {open?.kind === 'savings' && <SavingsSheet game={game} playerId={currentPlayer(game).id} onClose={close} />}
       {open?.kind === 'record' && <RecordSheet game={game} onClose={close} />}
+      {open?.kind === 'deal' && <NewDealSheet game={game} onClose={close} />}
+      {open?.kind === 'laws' && <LawsSheet game={game} onClose={close} />}
+      {open?.kind === 'teacher' && <TeacherMenu game={game} onClose={close} onRecord={() => setOpen({ kind: 'record' })} />}
 
       {result && (
         <Sheet icon="I04" title="Treasury" onClose={() => setResult(null)} footer={<Btn tone="teal" big onClick={() => setResult(null)}>Done</Btn>}>
