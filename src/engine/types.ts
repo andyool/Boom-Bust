@@ -71,6 +71,8 @@ export interface Transfer {
   label: string; // 1-3 words
   icon: string; // asset ID
   step?: Step;
+  qty?: number; // for itemising: qty x each (businesses, sites, loans...)
+  each?: number;
 }
 
 export type GameEvent =

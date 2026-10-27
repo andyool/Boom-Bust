@@ -42,7 +42,9 @@ function artStyle(s: Slot): CSSProperties {
   return { width: pct((W / H) * 100), height: pct((H / W) * 100), left: pct(((H - W) / 2 / H) * 100), top: pct(((W - H) / 2 / W) * 100), transform: `rotate(${s.rot}deg)` };
 }
 
-export function Board({ game, onTile, children }: { game: Game; onTile: (pos: number) => void; children: ReactNode }) {
+export function Board({
+  game, onTile, children, positions,
+}: { game: Game; onTile: (pos: number) => void; children: ReactNode; positions?: Record<string, number> }) {
   const ref = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const el = ref.current!;
@@ -61,8 +63,9 @@ export function Board({ game, onTile, children }: { game: Game; onTile: (pos: nu
         <Tile key={space.pos} space={space} game={game} onTap={() => onTile(space.pos)} />
       ))}
       {game.players.map((p) => {
-        const s = slotOf(p.position);
-        const here = game.players.filter((q) => q.position === p.position);
+        const at = (id: string) => positions?.[id] ?? getPlayer(game, id).position;
+        const s = slotOf(at(p.id));
+        const here = game.players.filter((q) => at(q.id) === at(p.id));
         const k = here.indexOf(p);
         const [dx, dy] = clusterOffset(k, here.length, s.corner);
         return (
@@ -74,7 +77,7 @@ export function Board({ game, onTile, children }: { game: Game; onTile: (pos: nu
               top: pct(s.top + s.height / 2),
               transform: `translate(calc(-50% + ${dx} * var(--w)), calc(-50% + ${dy} * var(--w)))`,
             }}
-            aria-label={`${p.name}: ${SPACES[p.position].label}`}
+            aria-label={`${p.name}: ${SPACES[at(p.id)].label}`}
           >
             <Token token={p.token} current={p.id === current?.id} />
           </span>

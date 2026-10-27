@@ -52,6 +52,7 @@
 .turn__top > .btn:only-child { grid-column: 2; }
 .turn__roll { padding: 6px 14px; justify-content: flex-start; min-height: 72px; }
 .turn__roll .token { box-shadow: 0 0 0 3px #fff; }
+.turn__art { height: 52px !important; width: auto !important; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
 .turn__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .btn--sm {
   font-size: 18px;

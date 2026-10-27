@@ -1,0 +1,79 @@
+.party { display: inline-block; flex: none; border-radius: 10px; object-fit: cover; box-shadow: 0 0 0 2px var(--navy); }
+.party--pile { position: relative; overflow: visible; }
+.party--pile img:first-child { width: 100%; height: 100%; border-radius: 10px; box-shadow: 0 0 0 2px var(--navy); }
+.party__owner { position: absolute; right: -6px; bottom: -6px; }
+
+.money-panel { display: flex; flex-direction: column; gap: 14px; }
+.money-panel--two { display: grid; grid-template-columns: 1.25fr 1fr; align-items: start; gap: 18px; }
+
+.lines { display: flex; flex-direction: column; gap: 6px; }
+.line {
+  display: grid;
+  grid-template-columns: 44px 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  border: 2px solid var(--navy);
+  border-radius: var(--radius);
+  background: #fffaf0;
+}
+.line__icon { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; }
+.line__label { font: 700 20px/1.1 'Poppins', sans-serif; display: flex; flex-direction: column; }
+.line__label small { font-size: 18px; opacity: 0.65; }
+.line__who { display: inline-flex; align-items: center; gap: 4px; }
+.line__arrow { font: 700 22px 'Poppins', sans-serif; opacity: 0.6; }
+.line:has(.line__notes) { grid-template-columns: 44px 1fr auto auto minmax(150px, auto); }
+.line__notes { display: flex; justify-content: flex-end; }
+.line--total { grid-template-columns: 1fr auto; border-width: 3px; background: #fff3cf; }
+.line--total .line__label { font-size: 24px; text-transform: uppercase; }
+
+.settle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 3px solid var(--teal);
+  border-radius: 16px;
+  background: #effaf9;
+}
+.settle__title { font-size: 22px; text-transform: uppercase; color: var(--teal); }
+.settle__row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.settle__arrow {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 120px;
+  height: 46px;
+  padding: 0 26px 0 14px;
+  background: var(--navy);
+  color: var(--cream);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 50%, calc(100% - 18px) 100%, 0 100%);
+  border-radius: 8px 0 0 8px;
+}
+.settle__arrow .num { font-size: 28px; }
+
+/* Dice */
+.die {
+  --size: 72px;
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  border: 3px solid var(--navy);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 0 var(--navy);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  touch-action: manipulation;
+}
+.die svg { width: 82%; height: 82%; }
+.die.is-on { background: var(--mustard); transform: translateY(3px); box-shadow: 0 1px 0 var(--navy); }
+.die.is-lose { border-color: var(--coral); }
+.die.is-lose.is-on { background: var(--coral); }
+.die:disabled { opacity: 0.35; cursor: default; }
+
+/* Number pad */
+.pad { display: grid; grid-template-columns: repeat(3, 76px); gap: 8px; }
+.pad__show { grid-column: 1 / -1; display: flex; justify-content: center; font-size: 40px; padding: 4px; border: 3px solid var(--navy); border-radius: 12px; background: #fff; }
+.pad .btn { min-height: 64px; font-size: 28px; padding: 0; }

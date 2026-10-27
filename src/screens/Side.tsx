@@ -7,7 +7,18 @@ import './side.css';
 
 export type SideAction = 'roll' | 'loan' | 'repay' | 'sell' | 'trade' | 'savings' | 'deal' | 'cantPay' | 'record';
 
-export function Side({ game, onPlayer, onAction }: { game: Game; onPlayer: (id: string) => void; onAction: (a: SideAction) => void }) {
+export interface MainButton {
+  label: string;
+  tone: 'teal' | 'mustard';
+  token?: string;
+  art?: string;
+  disabled?: boolean;
+  onClick: () => void;
+}
+
+export function Side({
+  game, main, onPlayer, onAction,
+}: { game: Game; main: MainButton | null; onPlayer: (id: string) => void; onAction: (a: SideAction) => void }) {
   const { actions } = useStore();
   const cur = game.players[game.turnIndex];
   const compact = game.players.length > 4;
@@ -35,10 +46,11 @@ export function Side({ game, onPlayer, onAction }: { game: Game; onPlayer: (id: 
 
       <section className="turn">
         <div className="turn__top">
-          {game.phase.name === 'turn' && (
-            <Btn tone="teal" big className="turn__roll" onClick={() => onAction('roll')}>
-              <Token token={cur.token} size={52} />
-              Roll
+          {main && (
+            <Btn tone={main.tone} big className="turn__roll" disabled={main.disabled} onClick={main.onClick}>
+              {main.token && <Token token={main.token} size={52} />}
+              {main.art && <Art id={main.art} className="turn__art" alt="" />}
+              {main.label}
             </Btn>
           )}
           {side('cantPay', "Can't pay", 'G04', 'coral')}

@@ -1,0 +1,156 @@
+/* Shared flow layout */
+.flow-title { display: inline-flex; align-items: center; gap: 12px; text-transform: none; }
+.flow-title__tile { height: 52px; width: auto; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.flow-row { display: flex; align-items: center; gap: 22px; }
+.flow-row--top { align-items: flex-start; }
+.flow-col { display: flex; flex-direction: column; gap: 14px; flex: 1; min-width: 0; }
+.flow-col--center { align-items: center; justify-content: center; }
+.flow-tile { height: 380px; width: auto; border-radius: 10px; box-shadow: 0 0 0 3px var(--navy); flex: none; }
+.flow-card { height: 380px; width: auto; border-radius: 14px; box-shadow: 0 6px 0 rgba(3, 40, 78, 0.25); flex: none; }
+.flow-card--big { height: 470px; }
+.flow-thumb { height: 120px; width: auto; border-radius: 8px; }
+.flow-qty { font-size: 30px; }
+.flow-error { font: 700 22px 'Poppins', sans-serif; color: var(--coral); }
+.grow { flex: 1; }
+.link-btn {
+  min-height: var(--touch);
+  border: 0;
+  background: none;
+  color: var(--navy);
+  font: 700 18px 'Poppins', sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--cream);
+  font: 700 20px 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.tag--green { background: var(--green); color: #fff; }
+.tag--coral { background: var(--coral); color: #fff; }
+.tag--mustard { background: var(--mustard); color: var(--navy); }
+
+/* A big "who pays whom" arrow */
+.pay-arrow { display: flex; align-items: center; gap: 12px; }
+.pay-arrow__amt {
+  display: inline-grid;
+  place-items: center;
+  min-width: 140px;
+  height: 64px;
+  padding: 0 34px 0 18px;
+  background: var(--navy);
+  color: var(--cream);
+  font-size: 36px;
+  clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 50%, calc(100% - 24px) 100%, 0 100%);
+  border-radius: 10px 0 0 10px;
+}
+
+/* Pickers */
+.pick-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.pick {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px; border: 3px solid transparent; border-radius: 16px; background: none; cursor: pointer; color: var(--navy);
+}
+.pick.is-on { border-color: var(--navy); background: var(--mustard); }
+.pick__name { font: 700 18px 'Poppins', sans-serif; }
+.pick-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.pick-card { padding: 0; border: 0; background: none; border-radius: 8px; cursor: pointer; transition: transform 120ms; }
+.pick-card img { height: 120px; width: auto; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.pick-card--deed img { height: 150px; }
+.pick-card.is-on { transform: translateY(-4px); }
+.pick-card.is-on img { box-shadow: 0 0 0 3px var(--navy), 0 0 0 7px var(--mustard); }
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+.thumbs img { height: 90px; width: auto; border-radius: 6px; }
+.thumbs--cards img { height: 140px; }
+
+.question { display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 2px solid var(--navy); border-radius: 16px; background: #fffaf0; }
+.question__q { display: inline-flex; align-items: center; gap: 12px; font: 700 26px 'Poppins', sans-serif; }
+.question__q img { height: 56px; width: auto; border-radius: 6px; }
+.yes-no { display: flex; gap: 14px; }
+.yes-no .btn { min-width: 150px; }
+.chips-pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips-pick .btn { min-width: 76px; padding: 4px 10px; font-size: 20px; }
+
+/* Card grid */
+.card-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; }
+.card-grid--news { grid-template-columns: repeat(8, 1fr); }
+.card-grid__card { padding: 0; border: 0; background: none; cursor: pointer; border-radius: 8px; transition: transform 120ms; }
+.card-grid__card img { width: 100%; border-radius: 8px; box-shadow: 0 3px 0 rgba(3, 40, 78, 0.25); }
+.card-grid__card:active { transform: scale(0.96); }
+
+/* Dice sheet */
+.dice { display: flex; align-items: center; gap: 36px; justify-content: center; }
+.dice__rows { display: flex; flex-direction: column; gap: 22px; }
+.dice__out { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-width: 220px; min-height: 300px; }
+.dice__sum { font-size: 96px; line-height: 1; }
+.dice__to { display: flex; align-items: center; gap: 8px; }
+.dice__tile { height: 150px; width: auto; border-radius: 8px; box-shadow: 0 0 0 2px var(--navy); }
+.dice__payday { height: 96px; width: auto; border-radius: 8px; box-shadow: 0 0 0 2px var(--navy); }
+.dice__job { display: flex; align-items: center; gap: 8px; }
+.dice__job img { height: 110px; width: auto; border-radius: 6px; }
+.dice__flip { font-size: 30px; }
+
+/* Shop around (Level 3) */
+.shop { display: flex; gap: 12px; }
+.shop__offer { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; opacity: 0.6; }
+.shop__offer.is-on { opacity: 1; border-width: 3px; box-shadow: 0 0 0 4px var(--mustard); }
+.shop__offer img { height: 140px; width: auto; border-radius: 6px; }
+.shop__clip { font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; color: var(--purple); }
+
+/* Study and jobs */
+.study-btn { min-width: 340px; justify-content: space-between; }
+.study-btn img { height: 56px; width: auto; border-radius: 4px; }
+.study-btn__tokens { display: inline-flex; gap: 4px; }
+.study-btn__tokens img { height: 40px; width: 40px; border-radius: 50%; }
+.job-flip { display: flex; align-items: center; gap: 10px; font-size: 30px; }
+.job-flip img { height: 150px; width: auto; border-radius: 8px; }
+.is-faded { opacity: 0.35; filter: grayscale(0.8); }
+.risk-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 8px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; }
+.risk-row__job { height: 70px; width: auto; border-radius: 4px; }
+.risk-row__use { display: flex; align-items: center; gap: 8px; }
+.risk-row__use img { height: 70px; width: auto; }
+.risk-row__use .btn { min-width: 90px; }
+
+/* Payday happenings */
+.econ-move { display: flex; align-items: center; gap: 12px; }
+.econ-move img { height: 96px; width: auto; border-radius: 10px; }
+.econ-move__arrow { font-size: 40px; }
+.econ-move__arrow.is-up { color: var(--green); }
+.econ-move__arrow.is-down { color: var(--coral); }
+.happenings { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.happen { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; }
+.happen img { height: 56px; width: auto; border-radius: 6px; }
+.happen .num { font-size: 22px; }
+
+/* Side sheets */
+.limit { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.limit img { height: 90px; width: auto; border-radius: 6px; }
+.limit img.is-empty { opacity: 0.25; }
+.limit__n { font-size: 34px; margin-left: 10px; }
+.trade-to { display: flex; align-items: center; gap: 14px; }
+.ways { display: flex; gap: 14px; }
+.bankrupt { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+.bankrupt__lose, .bankrupt__keep, .bankrupt__tokens { display: flex; align-items: center; gap: 6px; }
+.bankrupt img { height: 70px; width: auto; border-radius: 6px; }
+.bankrupt__lose img { opacity: 0.5; }
+
+/* Wrong space? tile grid */
+.tile-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; }
+.tile-grid__tile { padding: 0; border: 0; background: none; cursor: pointer; }
+.tile-grid__tile img { width: 100%; aspect-ratio: 5 / 8; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.tile-grid__tile.is-corner img { object-fit: contain; background: var(--cream); }
+.tile-grid__tile.is-on img { box-shadow: 0 0 0 3px var(--navy), 0 0 0 7px var(--mustard); }
+
+/* Result sheet */
+.result { display: flex; align-items: center; gap: 22px; }
+.result__art { height: 300px; width: auto; border-radius: 14px; box-shadow: 0 0 0 3px var(--navy); }
