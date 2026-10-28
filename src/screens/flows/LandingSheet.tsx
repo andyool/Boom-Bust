@@ -1,4 +1,5 @@
 // Landing sheets (SPEC 5.4): one per kind of space. Each previews the engine action, then confirms it.
+// Closing one before choosing drops the landing; BACK also returns to the player's spaces.
 import { useState } from 'react';
 import {
   ACTION_CARD, BUSINESS, C, DATA, INDUSTRY, SPACES, businessesIn, canAddSite, chargeFor, currentPlayer, effectiveClip,
@@ -10,20 +11,20 @@ import { Art, Btn, Money, Notes, Sheet, Token } from '../../ui/kit';
 import { Party } from '../../ui/money';
 import { CardPicker, DECK_BACK } from './CardPicker';
 import { PolicyVote } from './LawFlow';
-import { PickBusiness, PickPlayer, Preview, WrongSpace, YesNo, act } from './common';
+import { PickBusiness, PickPlayer, Preview, YesNo, act } from './common';
 import './flows.css';
 
 interface FlowProps {
   game: Game;
   space: Space;
   onClose: () => void;
-  onWrongSpace: () => void;
+  onBack: () => void;
 }
 
-export function LandingSheet({ game, onClose, onWrongSpace }: { game: Game; onClose: () => void; onWrongSpace: () => void }) {
+export function LandingSheet({ game, onClose, onBack }: { game: Game; onClose: () => void; onBack: () => void }) {
   if (game.phase.name !== 'land') return null;
   const space = SPACES[game.phase.pos];
-  const props = { game, space, onClose, onWrongSpace };
+  const props = { game, space, onClose, onBack };
   switch (space.kind) {
     case 'business':
       return game.holdings[space.businessId!].ownerId === null ? <BuyFlow {...props} /> : <RentFlow {...props} />;
@@ -61,7 +62,7 @@ function Head({ game, space }: { game: Game; space: Space }) {
 // ---------------------------------------------------------------------------
 // Unowned business: BUY or PASS (Level 2+: PASS offers an AUCTION)
 
-function BuyFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function BuyFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const b = BUSINESS[space.businessId!];
   const [auction, setAuction] = useState(false);
@@ -98,7 +99,7 @@ function BuyFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           {game.level >= 2 ? (
             <Btn tone="ghost" big onClick={() => setAuction(true)}>Pass</Btn>
@@ -127,7 +128,7 @@ function BuyFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
 // ---------------------------------------------------------------------------
 // Owned business or utility: who pays whom and why
 
-function RentFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function RentFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const [payee, setPayee] = useState<string | undefined>();
   const q = rentQuote(game, space.pos, p.id, payee);
@@ -140,7 +141,7 @@ function RentFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           <Btn tone={q.kind === 'none' ? 'teal' : gets ? 'green' : 'coral'} big disabled={!!q.choices}
             onClick={() => act({ type: 'payRent', payeeId: payee }, onClose)}>
@@ -201,7 +202,7 @@ function ShopAround({ game, industry, cheapest }: { game: Game; industry: string
 // ---------------------------------------------------------------------------
 // Life and Market: pick the card that was drawn, answer its question, see the result
 
-function CardFlow({ game, space, onClose, onWrongSpace, deck }: FlowProps & { deck: 'life' | 'market' }) {
+function CardFlow({ game, space, onClose, onBack, deck }: FlowProps & { deck: 'life' | 'market' }) {
   const p = currentPlayer(game);
   const [cardId, setCardId] = useState<string | null>(null);
   const [answer, setAnswer] = useState<boolean | undefined>();
@@ -211,7 +212,7 @@ function CardFlow({ game, space, onClose, onWrongSpace, deck }: FlowProps & { de
   if (!cardId) {
     return (
       <Sheet title={<span className="flow-title"><Token token={p.token} size={52} current /><Art id={DECK_BACK[deck]} className="flow-title__tile" alt="" />{space.label}</span>}
-        onClose={onClose} footer={<WrongSpace onClick={onWrongSpace} />}>
+        onClose={onClose} footer={<Btn tone="ghost" onClick={onBack}>Back</Btn>}>
         <CardPicker game={game} deck={deck} onPick={setCardId} />
       </Sheet>
     );
@@ -296,14 +297,14 @@ function Question({ icon, text, children }: { icon: string; text: string; childr
 // ---------------------------------------------------------------------------
 // Tax Time, Open Day, Super Fund, JOB CUT
 
-function TaxFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function TaxFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const biz = owned(game, p.id);
   return (
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           <Btn tone={biz.length ? 'coral' : 'teal'} big onClick={() => act({ type: 'taxTime' }, onClose)}>{biz.length ? 'Pay' : 'Done'}</Btn>
         </>
@@ -323,14 +324,14 @@ function TaxFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
   );
 }
 
-function OpenDayFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function OpenDayFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const opts = studyOptions(game, p.id, true);
   return (
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           <Btn tone="ghost" big onClick={() => act({ type: 'openDay', course: null }, onClose)}>No</Btn>
         </>
@@ -365,7 +366,7 @@ export function StudyButton({ label, tokens, level, ok, onClick }: { label: stri
   );
 }
 
-function SuperFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function SuperFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const [own, setOwn] = useState(0);
   const steps = Array.from({ length: C.superFundOwnMax / C.superFundStep + 1 }, (_, i) => i * C.superFundStep);
@@ -374,7 +375,7 @@ function SuperFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           <Btn tone="teal" big onClick={() => act(action, onClose)}>Done</Btn>
         </>
@@ -409,7 +410,7 @@ function SuperFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
   );
 }
 
-function JobCutFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
+function JobCutFlow({ game, space, onClose, onBack }: FlowProps) {
   const p = currentPlayer(game);
   const [roll, setRoll] = useState<number | null>(null);
   const [volunteer, setVolunteer] = useState(false);
@@ -424,7 +425,7 @@ function JobCutFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
     <Sheet title={<Head game={game} space={space} />} onClose={onClose}
       footer={
         <>
-          <WrongSpace onClick={onWrongSpace} />
+          <Btn tone="ghost" onClick={onBack}>Back</Btn>
           <span className="grow" />
           <Btn tone="teal" big disabled={!ready}
             onClick={() => act({ type: 'jobCut', ...(roll !== null ? { roll } : {}), volunteer: canUse && volunteer }, onClose)}>
@@ -469,6 +470,6 @@ function JobCutFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
 // ---------------------------------------------------------------------------
 // Parliament (Level 2+)
 
-function ParliamentFlow({ game, space, onClose, onWrongSpace }: FlowProps) {
-  return <PolicyVote game={game} title={<Head game={game} space={space} />} mode="parliament" onClose={onClose} footerLeft={<WrongSpace onClick={onWrongSpace} />} />;
+function ParliamentFlow({ game, space, onClose, onBack }: FlowProps) {
+  return <PolicyVote game={game} title={<Head game={game} space={space} />} mode="parliament" onClose={onClose} footerLeft={<Btn tone="ghost" onClick={onBack}>Back</Btn>} />;
 }

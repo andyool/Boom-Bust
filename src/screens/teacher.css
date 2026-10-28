@@ -47,7 +47,7 @@
 .undo-row { display: grid; grid-template-columns: 50px 52px 1fr auto auto; align-items: center; gap: 10px; padding: 4px 10px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; }
 .undo-row__n { font-size: 18px; opacity: 0.6; }
 .undo-row__art { height: 44px; width: 44px; object-fit: cover; border-radius: 5px; display: block; }
-.undo-row__label { font: 700 20px 'Poppins', sans-serif; }
+.undo-row__label { display: inline-flex; align-items: center; gap: 8px; font: 700 20px 'Poppins', sans-serif; }
 .undo-row__detail { font-size: 20px; }
 .undo-row .btn { min-height: 52px; font-size: 18px; padding: 4px 14px; }
 

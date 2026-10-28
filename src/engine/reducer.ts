@@ -6,7 +6,7 @@ import {
 import { Ctx } from './ctx';
 import {
   FREE_COURSE_CARD, availableCards, canAddSite, canBorrow, currentPlayer, econIndex, employed, fail,
-  freeJobs, getPlayer, lawInForce, lawParam, lawsInOrder, linked, livingCost, owned, ownsAll, rentQuote,
+  freeJobs, getPlayer, landingNote, lawInForce, lawParam, lawsInOrder, linked, livingCost, owned, ownsAll, rentQuote,
   sellValue, studyOptions, RuleError,
 } from './helpers';
 import { jobRisk, runOps, type OpInputs } from './ops';
@@ -125,6 +125,32 @@ function handle(ctx: Ctx, a: Action) {
       ctx.event({ kind: 'move', playerId: p.id, from: p.position, to: a.pos, steps: 0, passedPayday: false });
       p.position = a.pos;
       return arrive(ctx, a.pos);
+    }
+
+    // ---------------- Reporting (the app's turn flow) ----------------
+    // Students roll and move on the real board and only tell the app what happened there.
+    // Whoever reports something becomes the current player until it is finished.
+    case 'land': {
+      phaseIs(g, 'turn', 'after');
+      if (!Number.isInteger(a.pos) || a.pos < 0 || a.pos >= BOARD_SIZE) fail('Bad space');
+      const p = reporter(g, a.playerId);
+      p.position = a.pos;
+      return arrive(ctx, a.pos);
+    }
+    case 'payday': {
+      phaseIs(g, 'turn', 'after');
+      const p = reporter(g, a.playerId);
+      p.position = 0;
+      g.phase = { name: 'payday', step: 'news', playerId: p.id, resumeTo: 0, lines: [], events: [] };
+      return;
+    }
+    case 'doubles': {
+      phaseIs(g, 'turn', 'after');
+      const p = reporter(g, a.playerId);
+      if (p.jobStatus !== 'looking') fail('Doubles only matter when looking for work');
+      p.jobStatus = 'employed';
+      ctx.event({ kind: 'gotJob', playerId: p.id, why: 'doubles' });
+      return;
     }
 
     case 'next': {
@@ -401,6 +427,12 @@ function handle(ctx: Ctx, a: Action) {
   }
 }
 
+function reporter(g: Game, playerId: string): Player {
+  const p = getPlayer(g, playerId);
+  g.turnIndex = g.players.indexOf(p);
+  return p;
+}
+
 /** Side actions during a Payday are part of its Choices step. */
 function sideStep(ctx: Ctx) {
   ctx.step = ctx.g.phase.name === 'payday' ? 'choices' : 'action';
@@ -493,13 +525,8 @@ function moveBy(ctx: Ctx, p: Player, steps: number, forcePayday = false) {
 function arrive(ctx: Ctx, pos: number) {
   const g = ctx.g;
   const p = currentPlayer(g);
-  const space = SPACES[pos];
   g.phase = { name: 'land', pos };
-  let note: 'yours' | 'rest' | 'visit' | 'payday' | undefined;
-  if (space.kind === 'payday') note = 'payday';
-  else if (space.kind === 'job_centre') note = 'visit';
-  else if (space.kind === 'parliament' && g.level === 1) note = 'rest';
-  else if (space.businessId && g.holdings[space.businessId].ownerId === p.id) note = 'yours';
+  const note = landingNote(g, p, pos);
   ctx.event({ kind: 'landed', playerId: p.id, pos, note });
   if (note) done(g);
 }

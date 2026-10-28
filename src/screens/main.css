@@ -1,13 +1,18 @@
 .main { height: 100%; display: flex; flex-direction: column; }
-.main__body {
-  flex: 1;
-  min-height: 0;
-  display: grid;
-  grid-template-columns: minmax(400px, 38%) 1fr;
-  gap: 12px;
-  padding: 12px;
-}
+.main__body { flex: 1; min-height: 0; display: flex; padding: 12px 12px 0; }
 
-@media (orientation: portrait) {
-  .main__body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-}
+/* The bar under the players: Undo, the latest money (or the open flow), End game, Record. */
+.bar { display: flex; align-items: center; gap: 12px; padding: 12px; }
+.bar > .btn--side { width: 110px; flex: none; }
+.bar__mid { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; overflow: hidden; }
+.bar__label { font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; opacity: 0.6; }
+.bar__hint { flex: 1; text-align: center; font: 700 22px 'Poppins', sans-serif; opacity: 0.55; }
+.bar__art { height: 56px !important; width: auto !important; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.bar .token { box-shadow: 0 0 0 3px #fff; }
+.bar .settle { flex-direction: row; flex-wrap: wrap; padding: 6px 10px; gap: 6px 16px; border-width: 2px; }
+.bar .settle__arrow { min-width: 90px; height: 40px; }
+.bar .settle__arrow .num { font-size: 22px; }
+
+/* End game: is the last round back to the Start Player? */
+.end-ask { display: flex; align-items: center; justify-content: center; gap: 26px; min-height: 220px; }
+.end-ask__q { font: 700 40px 'Poppins', sans-serif; }

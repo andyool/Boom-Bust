@@ -25,5 +25,6 @@ export const TABLE_DECISIONS: string[] = [
   'Trading a business keeps its Extra Sites, resets its price clip to Standard and ends its Supply Deals.',
   'Bankruptcy: Savings go back to the player first; utilities they owned return to the government.',
   'Level 3 ties: the landed tile\'s owner if among the cheapest, otherwise the only cheapest owner, otherwise the lander picks.',
-  'The iPad is a companion: the physical board is the board.',
+  'The iPad is a companion: the physical board is the board. No dice are typed in; players tap the space they landed on only when something happens there, or PAYDAY.',
+  'The app cannot see turns, so in the last round the table taps END GAME when play comes back to the Start Player.',
 ];

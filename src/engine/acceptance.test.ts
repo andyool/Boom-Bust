@@ -68,28 +68,28 @@ describe('SPEC 11 acceptance tests', () => {
 
   it('3. Monopoly price', () => {
     const owns = [own('pizza_place', 'p2'), own('burger_bar', 'p2'), own('sushi_bar', 'p2')];
-    const l1 = newTable(1).edit(...owns).rollTo(18).do({ type: 'payRent' });
+    const l1 = newTable(1).edit(...owns).landOn(18).do({ type: 'payRent' });
     expect(l1.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'p2', amount: 60 })]);
 
-    const l2 = newTable(2).edit(...owns, set('prices', 4)).rollTo(18).do({ type: 'payRent' });
+    const l2 = newTable(2).edit(...owns, set('prices', 4)).landOn(18).do({ type: 'payRent' });
     expect(l2.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'p2', amount: 70 })]);
   });
 
   it('4. Employer: shift pay', () => {
     const all = newTable(1)
       .edit(own('furniture_factory', 'p2'), own('boat_builder', 'p2'), own('solar_factory', 'p2'))
-      .rollTo(32)
+      .landOn(32)
       .do({ type: 'payRent' });
     expect(all.g.last.transfers).toEqual([expect.objectContaining({ from: 'p2', to: 'p1', amount: 10, label: 'Shift pay' })]);
 
-    const one = newTable(1).edit(own('boat_builder', 'p2')).rollTo(32).do({ type: 'payRent' });
+    const one = newTable(1).edit(own('boat_builder', 'p2')).landOn(32).do({ type: 'payRent' });
     expect(one.g.last.transfers).toEqual([expect.objectContaining({ from: 'p2', to: 'p1', amount: 20 })]);
   });
 
   it('5. Transport', () => {
     const t = newTable(1)
       .edit(own('trucking', 'p2'), own('freight_railway', 'p2'), own('fremantle_port', 'p2'))
-      .rollTo(25)
+      .landOn(25)
       .do({ type: 'payRent' });
     expect(t.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'p2', amount: 60 })]);
   });
@@ -177,7 +177,7 @@ describe('SPEC 11 acceptance tests', () => {
       own('burger_bar', 'p2'),
       { target: 'holding', businessId: 'burger_bar', field: 'priceClip', value: 'budget' },
     );
-    t.rollTo(16).do({ type: 'payRent' });
+    t.landOn(16).do({ type: 'payRent' });
     expect(t.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'p2', amount: 20 })]);
   });
 
@@ -222,17 +222,17 @@ describe('SPEC 11 acceptance tests', () => {
 /** A game that touches most kinds of action. */
 function scriptedGame(): Table {
   const t = newTable(2, 4);
-  t.rollTo(6).do({ type: 'buy' }, { type: 'loan' }, { type: 'next' }); // Mia buys the Bakery
-  t.rollTo(9).do({ type: 'pass' }, { type: 'next' }); // Ben passes the Corner Deli
-  t.rollTo(6).do({ type: 'payRent' }, { type: 'next' }); // Ana pays Mia
-  t.rollTo(2).do({ type: 'drawCard', cardId: 'L03' }, { type: 'savings', amount: 200 }, { type: 'next' });
+  t.landOn(6).do({ type: 'buy' }, { type: 'loan' }, { type: 'next' }); // Mia buys the Bakery
+  t.landOn(9).do({ type: 'pass' }, { type: 'next' }); // Ben passes the Corner Deli
+  t.landOn(6).do({ type: 'payRent' }, { type: 'next' }); // Ana pays Mia
+  t.landOn(2).do({ type: 'drawCard', cardId: 'L03' }, { type: 'savings', amount: 200 }, { type: 'next' });
   t.do({ type: 'roll', d1: 1, d2: 2 }); // Mia from 6 to 9: the Corner Deli Ben passed on
   t.do({ type: 'auction', winnerId: 'p3', bid: 80 }, { type: 'next' });
-  t.rollTo(30).do({ type: 'jobCut' }, { type: 'next' }); // Ben loses his Entry job
-  t.rollTo(0).do({ type: 'news', cardId: 'N03' }, { type: 'paydaySettle' }, { type: 'addSite', businessId: 'corner_deli' }, { type: 'paydayDone' });
+  t.landOn(30).do({ type: 'jobCut' }, { type: 'next' }); // Ben loses his Entry job
+  t.startPayday().do({ type: 'news', cardId: 'N03' }, { type: 'paydaySettle' }, { type: 'addSite', businessId: 'corner_deli' }, { type: 'paydayDone' });
   t.do({ type: 'next' });
-  t.rollTo(20).do({ type: 'parliament', cardId: 'P11', passed: true }, { type: 'next' });
-  t.rollTo(0).do({ type: 'news', cardId: 'N11' }, { type: 'paydaySettle' }, { type: 'paydayDone' });
+  t.landOn(20).do({ type: 'parliament', cardId: 'P11', passed: true }, { type: 'next' });
+  t.startPayday().do({ type: 'news', cardId: 'N11' }, { type: 'paydaySettle' }, { type: 'paydayDone' });
   t.do({ type: 'sell', businessId: 'bakery' }, { type: 'next' });
   return t;
 }

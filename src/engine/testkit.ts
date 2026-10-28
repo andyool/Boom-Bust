@@ -27,16 +27,14 @@ export class Table {
     return this.g.phase;
   }
 
-  /** Moves the current player so a roll of 1+2 lands on `pos`, and rolls. Position 0 means passing PAYDAY. */
-  rollTo(pos: number): this {
-    if (pos === 1 || pos === 2) return this.do({ type: 'moveTo', pos }); // a 1+2 roll would pass PAYDAY
-    const p = this.g.players[this.g.turnIndex];
-    return this.edit({ target: 'player', playerId: p.id, field: 'position', value: (pos - 3 + 40) % 40 }).do({ type: 'roll', d1: 1, d2: 2 });
+  /** The current player reports landing on `pos`, as the UI does. */
+  landOn(pos: number): this {
+    return this.do({ type: 'land', playerId: this.g.players[this.g.turnIndex].id, pos });
   }
 
-  /** Current player passes PAYDAY (lands on it exactly) and starts their Payday. */
+  /** The current player reports passing PAYDAY and starts their Payday. */
   startPayday(): this {
-    return this.rollTo(0);
+    return this.do({ type: 'payday', playerId: this.g.players[this.g.turnIndex].id });
   }
 
   /** A whole Payday: News, settle, optional choices, DONE. */

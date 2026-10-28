@@ -1,7 +1,12 @@
-// A player's things: job, money papers, Super, Savings, businesses and KEEP cards.
-import { BUSINESS, JOB, getPlayer, owned, type Game, type Player } from '../engine';
-import { Art, Chip, Money, Sheet, Token } from '../ui/kit';
+// A player's sheet: tap the space your piece landed on, or a side action. Students roll and move on the
+// real board and only come here when something happens; spaces with nothing to do are greyed out.
+import { JOB, SPACES, getPlayer, landingNote, type Action, type Game, type Player } from '../engine';
+import { Pips } from '../ui/inputs';
+import { Art, Btn, Chip, Sheet, Token, toast } from '../ui/kit';
+import { act } from './flows/common';
 import './sheets.css';
+
+export type SideAction = 'loan' | 'repay' | 'sell' | 'trade' | 'savings' | 'deal' | 'cantPay';
 
 /** The job card a player shows: their card, the "looking for work" back, or the Study token. */
 export function jobArt(p: Player) {
@@ -27,67 +32,56 @@ export function PlayerChips({ game, p }: { game: Game; p: Player }) {
   );
 }
 
-export function PlayerSheet({ game, playerId, onClose }: { game: Game; playerId: string; onClose: () => void }) {
+export function PlayerSheet({
+  game, playerId, paid, onClose, onAction,
+}: { game: Game; playerId: string; paid: boolean; onClose: () => void; onAction: (a: SideAction) => void }) {
   const p = getPlayer(game, playerId);
-  const biz = owned(game, p.id);
+  // The landing or Payday sheet opens as soon as the report is in.
+  const report = (a: Action) => act(a, onClose);
+  const side = (a: SideAction, label: string, icon: string, tone: 'ghost' | 'coral' = 'ghost') => (
+    <Btn tone={tone} className="btn--side" onClick={() => onAction(a)}>
+      <Art id={icon} alt="" />
+      <span>{label}</span>
+    </Btn>
+  );
+
   return (
-    <Sheet title={<span className="psheet__title"><Token token={p.token} size={64} current={game.players[game.turnIndex].id === p.id} />{p.name}</span>} onClose={onClose}>
+    <Sheet title={<span className="flow-title"><Token token={p.token} size={56} />{p.name}<PlayerChips game={game} p={p} /></span>} onClose={onClose}>
       <div className="psheet">
-        <div className="psheet__job">
-          <Art id={p.jobStatus === 'looking' ? 'K07' : p.jobId} size="lg" alt={JOB[p.jobId].name} />
-          {p.study && (
-            <span className="psheet__study">
-              {Array.from({ length: p.study.tokensLeft }, (_, i) => (
-                <Art key={i} id="I08" alt="Study" />
-              ))}
-            </span>
-          )}
+        <div className="where" role="group" aria-label="Landed on">
+          {SPACES.map((s) => {
+            const payday = s.kind === 'payday';
+            const owner = s.businessId ? game.holdings[s.businessId].ownerId : null;
+            return (
+              <button key={s.pos} type="button" aria-label={s.label}
+                className={`where__tile${s.side === 'corner' ? ' is-corner' : ''}${payday ? ' where__tile--payday' : ''}`}
+                disabled={payday ? paid : landingNote(game, p, s.pos) !== undefined}
+                onClick={() => report(payday ? { type: 'payday', playerId: p.id } : { type: 'land', playerId: p.id, pos: s.pos })}>
+                <Art id={s.tile} alt="" />
+                {owner && <Token token={getPlayer(game, owner).token} size={30} className="where__owner" />}
+              </button>
+            );
+          })}
         </div>
         <div className="psheet__side">
-          <div className="psheet__stats">
-            <Stat icon="I09" label="Super" value={<Money amount={p.superBalance} plain big />} />
-            {game.level >= 2 && <Stat icon="I03" label="Savings" value={<Money amount={p.savings} plain big />} />}
-            <Stat icon="G01" label="Loans" value={<span className="num psheet__n">×{p.loans}</span>} />
-            {p.hecs && <Stat icon="G03" label="HECS" value={<span className="num psheet__n">✓</span>} />}
-            {p.bankruptTokens > 0 && <Stat icon="G04" label="Bankrupt" value={<span className="num psheet__n">{p.bankruptTokens}</span>} />}
-          </div>
-          {biz.length > 0 && (
-            <div className="psheet__deeds">
-              {biz.map((h) => (
-                <span key={h.businessId} className="psheet__deed">
-                  <Art id={BUSINESS[h.businessId].deed} alt={BUSINESS[h.businessId].name} />
-                  {h.extraSites > 0 && (
-                    <span className="psheet__sites">
-                      {Array.from({ length: h.extraSites }, (_, i) => (
-                        <Art key={i} id="I07" alt="Extra Site" />
-                      ))}
-                    </span>
-                  )}
-                </span>
-              ))}
-            </div>
+          {p.jobStatus === 'looking' && (
+            <Btn tone="mustard" className="btn--side psheet__doubles" onClick={() => act({ type: 'doubles', playerId: p.id }, () => toast('Got job'))}>
+              <span className="dice-pair">
+                <Pips value={4} />
+                <Pips value={4} />
+              </span>
+              <span>Doubles</span>
+            </Btn>
           )}
-          {p.keepCards.length > 0 && (
-            <div className="psheet__deeds">
-              {p.keepCards.map((c) => (
-                <span key={c} className="psheet__deed">
-                  <Art id={c} />
-                </span>
-              ))}
-            </div>
-          )}
+          {side('loan', 'Loan', 'G01')}
+          {side('repay', 'Repay', 'G01')}
+          {side('sell', 'Sell', 'I06')}
+          {side('trade', 'Trade', 'K06')}
+          {game.level >= 2 && side('savings', 'Savings', 'I03')}
+          {game.level >= 3 && side('deal', 'Deal', 'G05')}
+          {side('cantPay', "Can't pay", 'G04', 'coral')}
         </div>
       </div>
     </Sheet>
-  );
-}
-
-function Stat({ icon, label, value }: { icon: string; label: string; value: React.ReactNode }) {
-  return (
-    <div className="stat">
-      <Art id={icon} alt="" />
-      <span className="stat__label">{label}</span>
-      {value}
-    </div>
   );
 }

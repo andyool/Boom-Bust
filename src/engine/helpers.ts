@@ -264,6 +264,16 @@ export function canAddSite(g: Game, businessId: string): boolean {
   return b.extraSiteCost !== null && g.holdings[businessId].extraSites < C.maxExtraSites;
 }
 
+/** Why landing on a space needs nothing from the app: PAYDAY, JOB CENTRE, Level 1 PARLIAMENT, your own business. */
+export function landingNote(g: Game, p: Player, pos: number): 'yours' | 'rest' | 'visit' | 'payday' | undefined {
+  const space = SPACES[pos];
+  if (space.kind === 'payday') return 'payday';
+  if (space.kind === 'job_centre') return 'visit';
+  if (space.kind === 'parliament' && g.level === 1) return 'rest';
+  if (space.businessId && g.holdings[space.businessId].ownerId === p.id) return 'yours';
+  return undefined;
+}
+
 /** Cards that can be picked from a deck right now (hides held KEEP cards and laws in force). */
 export function availableCards(g: Game, deck: 'news' | 'life' | 'market' | 'policy'): string[] {
   const held = new Set(g.players.flatMap((p) => p.keepCards));

@@ -24,12 +24,19 @@ export function Die({
       aria-label={String(value)}
       aria-pressed={on}
     >
-      <svg viewBox="0 0 100 100" aria-hidden>
-        {PIPS[value].map(([x, y], i) => (
-          <circle key={i} cx={x} cy={y} r={9.5} fill="var(--navy)" />
-        ))}
-      </svg>
+      <Pips value={value} />
     </button>
+  );
+}
+
+/** The pips of one die face, for buttons and pictures of dice. */
+export function Pips({ value }: { value: number }) {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden>
+      {PIPS[value].map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={9.5} fill="var(--navy)" />
+      ))}
+    </svg>
   );
 }
 

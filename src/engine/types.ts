@@ -110,7 +110,7 @@ export interface PaydayPhase {
   name: 'payday';
   step: 'news' | 'settle' | 'choices';
   playerId: string;
-  resumeTo: number; // where the move finishes after Payday
+  resumeTo: number; // where the move finishes after Payday (0 when reported on its own)
   newsCard?: string;
   newsEvents?: number; // how many of `events` came from the News card (step 1)
   lines: Transfer[]; // everything this Payday so far, for the itemised screen
@@ -119,10 +119,10 @@ export interface PaydayPhase {
 
 export type Phase =
   | { name: 'setup' }
-  | { name: 'turn' } // waiting for ROLL
+  | { name: 'turn' } // nothing open: anyone can report what happened
   | PaydayPhase
   | { name: 'land'; pos: number } // landing sheet open
-  | { name: 'after' } // landed; side actions; NEXT
+  | { name: 'after' } // a landing or Payday finished; like 'turn' (the dice flow used it to wait for NEXT)
   | { name: 'over' };
 
 export interface Game {
@@ -160,8 +160,12 @@ export interface SetupPlayer {
 }
 
 export type Action =
-  // setup and turn flow
+  // setup and turn flow: players report what happened on the board (pos 0-39; Payday has its own action)
   | { type: 'setup'; level: Level; players: SetupPlayer[]; endPaydays?: number; timerMinutes?: number }
+  | { type: 'land'; playerId: string; pos: number }
+  | { type: 'payday'; playerId: string }
+  | { type: 'doubles'; playerId: string } // rolled doubles while looking for work
+  // the first version's dice flow: still replays saved games, and drives some tests
   | { type: 'roll'; d1: number; d2: number }
   | { type: 'moveTo'; pos: number; passPayday?: boolean }
   | { type: 'next' }

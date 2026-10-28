@@ -1,7 +1,7 @@
 // Broader rules coverage beyond SPEC 11: every card, laws, Level 3, DECISIONS.md.
 import { describe, expect, it } from 'vitest';
 import { C, DATA } from './data';
-import { availableCards, canBorrow, chargeFor, loanLimit, rentQuote, sellValue, studyOptions } from './helpers';
+import { availableCards, canBorrow, chargeFor, landingNote, loanLimit, rentQuote, sellValue, studyOptions } from './helpers';
 import { netFor, notesFor } from './money';
 import { apply } from './reducer';
 import { itemise, newTable, own, pset, set, stepLines, Table } from './testkit';
@@ -42,11 +42,11 @@ describe('halves round up to the next $10 (DECISIONS.md)', () => {
     expect(t.g.holdings.lithium_mine.ownerId).toBeNull();
   });
   it('M12 half-price Extra Site and M14 bargain', () => {
-    const m12 = newTable(1).edit(own('coffee_cart', 'p1')).rollTo(22).do({ type: 'drawCard', cardId: 'M12', businessId: 'coffee_cart' });
+    const m12 = newTable(1).edit(own('coffee_cart', 'p1')).landOn(22).do({ type: 'drawCard', cardId: 'M12', businessId: 'coffee_cart' });
     expect(m12.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'bank', amount: 20 })]);
     expect(m12.g.holdings.coffee_cart).toMatchObject({ extraSites: 1, sitesPaid: 20 });
 
-    const m14 = newTable(1).rollTo(22).do({ type: 'drawCard', cardId: 'M14', businessId: 'lithium_mine' });
+    const m14 = newTable(1).landOn(22).do({ type: 'drawCard', cardId: 'M14', businessId: 'lithium_mine' });
     expect(m14.g.last.transfers).toEqual([expect.objectContaining({ from: 'p1', to: 'bank', amount: 180 })]);
     expect(m14.g.holdings.lithium_mine.ownerId).toBe('p1');
   });
@@ -69,26 +69,26 @@ describe('every card resolves', () => {
       L09: { answer: true }, L19: { answer: true }, M12: { businessId: 'iron_ore_mine' }, M14: { businessId: 'butcher' }, M15: { otherId: 'p2' },
     };
     for (const card of [...DATA.cards.life, ...DATA.cards.market]) {
-      const t = fork(base).rollTo(card.deck === 'life' ? 2 : 22).do({ type: 'drawCard', cardId: card.id, ...inputs[card.id] });
+      const t = fork(base).landOn(card.deck === 'life' ? 2 : 22).do({ type: 'drawCard', cardId: card.id, ...inputs[card.id] });
       expect(t.g.phase.name).toBe('after');
     }
   });
   it('some card results', () => {
     const base = richTable(2);
-    const draw = (cardId: string, extra = {}) => fork(base).rollTo(2).do({ type: 'drawCard', cardId, ...extra }).g.last.transfers;
+    const draw = (cardId: string, extra = {}) => fork(base).landOn(2).do({ type: 'drawCard', cardId, ...extra }).g.last.transfers;
     expect(netFor(draw('L03'), 'p1')).toBe(30); // three others pay $10
     expect(draw('L06')).toEqual([expect.objectContaining({ from: 'p1', amount: 50 })]); // Mia is Entry
     expect(draw('L09', { answer: false })).toEqual([]);
-    const market = (cardId: string) => fork(base).rollTo(22).do({ type: 'drawCard', cardId }).g.last.transfers;
+    const market = (cardId: string) => fork(base).landOn(22).do({ type: 'drawCard', cardId }).g.last.transfers;
     expect(netFor(market('M06'), 'p3')).toBe(-30); // Clothing Store only
     expect(netFor(market('M06'), 'p1')).toBe(20); // one transport
     expect(netFor(market('M07'), 'treasury')).toBe(3 * 40); // 3 factories + mines, all Mia's
-    expect(netFor(fork(base).edit(law('P15')).rollTo(22).do({ type: 'drawCard', cardId: 'M07' }).g.last.transfers, 'treasury')).toBe(3 * 20);
+    expect(netFor(fork(base).edit(law('P15')).landOn(22).do({ type: 'drawCard', cardId: 'M07' }).g.last.transfers, 'treasury')).toBe(3 * 20);
   });
   it('M15 needs a partner who owns a business; nothing if nobody does', () => {
-    const t = newTable(1).rollTo(22);
+    const t = newTable(1).landOn(22);
     expect(t.do({ type: 'drawCard', cardId: 'M15' }).g.last.transfers).toEqual([]);
-    const u = richTable(1).rollTo(22);
+    const u = richTable(1).landOn(22);
     expect(() => apply(u.g, { type: 'drawCard', cardId: 'M15' })).toThrow(/player/);
     expect(() => apply(u.g, { type: 'drawCard', cardId: 'M15', otherId: 'p4' })).toThrow(/owns no business/);
   });
@@ -103,7 +103,7 @@ describe('every card resolves', () => {
   });
   it('M16 fines every complete industry; Level 3 forces Standard until the owner\'s Payday', () => {
     const t = newTable(3).edit(own('pizza_place', 'p2'), own('burger_bar', 'p2'), own('sushi_bar', 'p2'), clip('pizza_place', 'monopoly'));
-    t.rollTo(22).do({ type: 'drawCard', cardId: 'M16' });
+    t.landOn(22).do({ type: 'drawCard', cardId: 'M16' });
     expect(t.g.last.transfers).toEqual([expect.objectContaining({ from: 'p2', to: 'treasury', amount: 100 })]);
     expect(chargeFor(t.g, t.g.holdings.pizza_place).clip).toBe('standard');
     t.nextUntil('p2').startPayday().do({ type: 'news', cardId: 'N15' });
@@ -117,7 +117,7 @@ describe('laws (Level 2)', () => {
     expect(() => apply(t.g, { type: 'budgetNight', cardId: 'P08' })).toThrow(/remove/);
     t.do({ type: 'budgetNight', cardId: 'P08', removeLawId: 'P07' });
     expect(t.g.laws.map((l) => l.id)).toEqual(['P03', 'P04', 'P08']);
-    t.edit(own('bakery', 'p1'), own('gym', 'p1')).rollTo(4).do({ type: 'taxTime' });
+    t.edit(own('bakery', 'p1'), own('gym', 'p1')).landOn(4).do({ type: 'taxTime' });
     expect(t.g.last.transfers).toEqual([expect.objectContaining({ to: 'treasury', amount: 2 * 10, qty: 2, each: 10 })]); // P04 is later
   });
   it('JobSeeker follows the latest of P07 and P08', () => {
@@ -134,7 +134,7 @@ describe('laws (Level 2)', () => {
     expect(chargeFor(l3.g, l3.g.holdings.supermarket).amount).toBe(30);
   });
   it('P10 auctions the utilities; owners collect bills and profit; selling returns them to government', () => {
-    const t = newTable(2).rollTo(20).do({
+    const t = newTable(2).landOn(20).do({
       type: 'parliament', cardId: 'P10', passed: true,
       auctions: [{ businessId: 'power_company', winnerId: 'p2', bid: 150 }, { businessId: 'water_company', winnerId: null, bid: 0 }],
     });
@@ -181,14 +181,14 @@ describe('laws (Level 2)', () => {
 describe('Level 3 shopping around', () => {
   it('the lander picks between two other cheapest owners', () => {
     const t = newTable(3, 4).edit(own('pizza_place', 'p2'), own('burger_bar', 'p3'), own('sushi_bar', 'p4'), clip('pizza_place', 'premium'));
-    t.rollTo(16);
+    t.landOn(16);
     expect(rentQuote(t.g, 16, 'p1').choices).toEqual(['p3', 'p4']);
     expect(() => apply(t.g, { type: 'payRent' })).toThrow(/Pick/);
     t.do({ type: 'payRent', payeeId: 'p4' });
     expect(t.g.last.transfers).toEqual([expect.objectContaining({ to: 'p4', amount: 30 })]);
   });
   it('pays nothing if the cheapest is the lander\'s own', () => {
-    const t = newTable(3).edit(own('pizza_place', 'p2'), own('burger_bar', 'p1'), clip('burger_bar', 'budget')).rollTo(16).do({ type: 'payRent' });
+    const t = newTable(3).edit(own('pizza_place', 'p2'), own('burger_bar', 'p1'), clip('burger_bar', 'budget')).landOn(16).do({ type: 'payRent' });
     expect(t.g.last.transfers).toEqual([]);
     expect(t.g.last.events).toContainEqual({ kind: 'cheapestIsYours', playerId: 'p1', businessId: 'burger_bar' });
   });
@@ -212,7 +212,7 @@ describe('Starting Life (Level 3)', () => {
     expect(t.g.last.transfers[0]).toMatchObject({ from: 'bank', to: 'treasury', amount: C.treasuryStart });
   });
   it('S01 is kept when the first course is already free, then used (DECISIONS.md)', () => {
-    const t = newTable(3, 3, ['S01', 'S06', 'S06']).rollTo(7).do({ type: 'openDay', course: 'uni' });
+    const t = newTable(3, 3, ['S01', 'S06', 'S06']).landOn(7).do({ type: 'openDay', course: 'uni' });
     expect(t.g.players[0]).toMatchObject({ hecs: false, freeCourseUsed: false, jobStatus: 'studying' });
     const fresh = newTable(3, 3, ['S01', 'S06', 'S06']);
     expect(studyOptions(fresh.g, 'p1', false).uni).toMatchObject({ hecs: false, freeBy: 'family' });
@@ -234,17 +234,17 @@ describe('jobs, study and loans', () => {
     expect(t.g.last.events[0]).toEqual({ kind: 'gotJob', playerId: 'p1', why: 'doubles' });
   });
   it('JOB CUT: lost job moves to JOB CENTRE without Payday; L12 can save it', () => {
-    const t = newTable(1).rollTo(30).do({ type: 'jobCut' });
+    const t = newTable(1).landOn(30).do({ type: 'jobCut' });
     expect([t.g.players[0].jobStatus, t.g.players[0].position, t.g.phase.name]).toEqual(['looking', 10, 'after']);
-    const v = newTable(1).edit(pset('p1', 'keepCards', ['L12'])).rollTo(30).do({ type: 'jobCut', volunteer: true });
+    const v = newTable(1).edit(pset('p1', 'keepCards', ['L12'])).landOn(30).do({ type: 'jobCut', volunteer: true });
     expect([v.g.players[0].jobStatus, v.g.players[0].keepCards]).toEqual(['employed', []]);
-    const skilled = newTable(1).edit(pset('p1', 'jobId', 'J07')).rollTo(30);
+    const skilled = newTable(1).edit(pset('p1', 'jobId', 'J07')).landOn(30);
     expect(skilled.do({ type: 'jobCut', roll: 4 }).g.players[0].jobStatus).toBe('employed');
   });
   it('L19 insurance cancels the next Car Crash', () => {
-    const t = newTable(1).rollTo(2).do({ type: 'drawCard', cardId: 'L19', answer: true });
+    const t = newTable(1).landOn(2).do({ type: 'drawCard', cardId: 'L19', answer: true });
     expect(availableCards(t.g, 'life')).not.toContain('L19');
-    t.do({ type: 'next' }).skipTurn().skipTurn().rollTo(17).do({ type: 'drawCard', cardId: 'L20' });
+    t.do({ type: 'next' }).skipTurn().skipTurn().landOn(17).do({ type: 'drawCard', cardId: 'L20' });
     expect(t.g.last.transfers).toEqual([]);
     expect(t.g.players[0].keepCards).toEqual([]);
   });
@@ -267,10 +267,46 @@ describe('jobs, study and loans', () => {
     expect(t.g.players[0].bankruptTokens).toBe(2);
   });
   it('Super Fund: Bank adds $50 if employed; anyone may add up to $100', () => {
-    const t = newTable(1).rollTo(38).do({ type: 'superFund', own: 30 });
+    const t = newTable(1).landOn(38).do({ type: 'superFund', own: 30 });
     expect(t.g.players[0].superBalance).toBe(80);
-    const l = newTable(1).edit(pset('p1', 'jobStatus', 'looking')).rollTo(38).do({ type: 'superFund', own: 100 });
+    const l = newTable(1).edit(pset('p1', 'jobStatus', 'looking')).landOn(38).do({ type: 'superFund', own: 100 });
     expect(l.g.players[0].superBalance).toBe(100);
+  });
+});
+
+describe('reporting what happened (no dice entry)', () => {
+  it('any player can report a landing, in any order; it acts for them', () => {
+    const t = newTable(1).do({ type: 'land', playerId: 'p3', pos: 6 }, { type: 'buy' });
+    expect(t.g.holdings.bakery.ownerId).toBe('p3');
+    expect(t.g.phase.name).toBe('after');
+    t.do({ type: 'land', playerId: 'p1', pos: 6 }, { type: 'payRent' });
+    expect(itemise(t.g.last.transfers, 'p1')).toEqual([['Standard', -20]]);
+  });
+  it('Payday reported on its own finishes with nothing open', () => {
+    const t = newTable(1).do({ type: 'land', playerId: 'p2', pos: 9 }, { type: 'pass' }, { type: 'payday', playerId: 'p2' });
+    expect(t.payday.playerId).toBe('p2');
+    t.do({ type: 'news', cardId: 'N15' }, { type: 'paydaySettle' }, { type: 'paydayDone' });
+    expect([t.g.phase.name, t.g.players[1].paydays]).toEqual(['after', 1]);
+  });
+  it('nothing new can start while a landing or Payday is open', () => {
+    const t = newTable(1).do({ type: 'payday', playerId: 'p1' });
+    expect(() => apply(t.g, { type: 'land', playerId: 'p2', pos: 6 })).toThrow(/Not allowed/);
+    expect(() => apply(newTable(1).landOn(6).g, { type: 'payday', playerId: 'p2' })).toThrow(/Not allowed/);
+  });
+  it('quiet spaces finish straight away', () => {
+    const t = newTable(1).edit(own('bakery', 'p1'));
+    for (const pos of [6, 10, 20]) {
+      t.do({ type: 'land', playerId: 'p1', pos });
+      expect(t.g.phase.name).toBe('after');
+    }
+    expect(landingNote(t.g, t.g.players[0], 6)).toBe('yours');
+    expect(landingNote(t.g, t.g.players[1], 6)).toBeUndefined();
+  });
+  it('doubles get the job back only for players looking for work', () => {
+    const t = newTable(1).edit(pset('p2', 'jobStatus', 'looking')).do({ type: 'doubles', playerId: 'p2' });
+    expect(t.g.players[1].jobStatus).toBe('employed');
+    expect(t.g.last.events).toEqual([{ kind: 'gotJob', playerId: 'p2', why: 'doubles' }]);
+    expect(() => apply(t.g, { type: 'doubles', playerId: 'p2' })).toThrow(/looking for work/);
   });
 });
 

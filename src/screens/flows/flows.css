@@ -88,18 +88,6 @@
 .card-grid__card img { width: 100%; border-radius: 8px; box-shadow: 0 3px 0 rgba(3, 40, 78, 0.25); }
 .card-grid__card:active { transform: scale(0.96); }
 
-/* Dice sheet */
-.dice { display: flex; align-items: center; gap: 36px; justify-content: center; }
-.dice__rows { display: flex; flex-direction: column; gap: 22px; }
-.dice__out { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; min-width: 220px; min-height: 300px; }
-.dice__sum { font-size: 96px; line-height: 1; }
-.dice__to { display: flex; align-items: center; gap: 8px; }
-.dice__tile { height: 150px; width: auto; border-radius: 8px; box-shadow: 0 0 0 2px var(--navy); }
-.dice__payday { height: 96px; width: auto; border-radius: 8px; box-shadow: 0 0 0 2px var(--navy); }
-.dice__job { display: flex; align-items: center; gap: 8px; }
-.dice__job img { height: 110px; width: auto; border-radius: 6px; }
-.dice__flip { font-size: 30px; }
-
 /* Shop around (Level 3) */
 .shop { display: flex; gap: 12px; }
 .shop__offer { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px; border: 2px solid var(--navy); border-radius: 12px; background: #fffaf0; opacity: 0.6; }
@@ -143,13 +131,6 @@
 .bankrupt__lose, .bankrupt__keep, .bankrupt__tokens { display: flex; align-items: center; gap: 6px; }
 .bankrupt img { height: 70px; width: auto; border-radius: 6px; }
 .bankrupt__lose img { opacity: 0.5; }
-
-/* Wrong space? tile grid */
-.tile-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; }
-.tile-grid__tile { padding: 0; border: 0; background: none; cursor: pointer; }
-.tile-grid__tile img { width: 100%; aspect-ratio: 5 / 8; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
-.tile-grid__tile.is-corner img { object-fit: contain; background: var(--cream); }
-.tile-grid__tile.is-on img { box-shadow: 0 0 0 3px var(--navy), 0 0 0 7px var(--mustard); }
 
 /* Result sheet */
 .result { display: flex; align-items: center; gap: 22px; }

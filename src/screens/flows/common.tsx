@@ -61,11 +61,3 @@ export function YesNo({ value, onPick }: { value?: boolean; onPick: (v: boolean)
     </div>
   );
 }
-
-export function WrongSpace({ onClick }: { onClick: () => void }) {
-  return (
-    <button type="button" className="link-btn" onClick={onClick}>
-      Wrong space?
-    </button>
-  );
-}

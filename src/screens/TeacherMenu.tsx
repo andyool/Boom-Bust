@@ -74,7 +74,8 @@ const edit = (...edits: Edit[]) => act({ type: 'edit', edits });
 // Undo several steps
 
 const DESCRIBE: Record<Action['type'], string> = {
-  setup: 'Setup', roll: 'Roll', moveTo: 'Move', next: 'Next', news: 'News', paydaySettle: 'Payday', paydayDone: 'Payday done',
+  setup: 'Setup', land: 'Landed', payday: 'Payday', doubles: 'Doubles', roll: 'Roll', moveTo: 'Move', next: 'Next', news: 'News',
+  paydaySettle: 'Payday', paydayDone: 'Payday done',
   addSite: '+ Site', study: 'Study', setClip: 'Price clip', cancelDeal: 'Deal ended', buy: 'Buy', pass: 'Pass', auction: 'Auction',
   payRent: 'Pay', drawCard: 'Card', taxTime: 'Tax Time', openDay: 'Open Day', superFund: 'Super', jobCut: 'Job Cut',
   parliament: 'Parliament', loan: 'Loan', repay: 'Repay', sell: 'Sell', trade: 'Trade', savings: 'Savings', deal: 'Deal',
@@ -94,8 +95,12 @@ function actionArt(a: Action): string | null {
     case 'addSite':
     case 'setClip':
       return BUSINESS[a.businessId]?.tile ?? null;
+    case 'land':
     case 'moveTo':
       return SPACES[a.pos]?.tile ?? null;
+    case 'doubles':
+      return 'K07';
+    case 'payday':
     case 'paydaySettle':
     case 'paydayDone':
       return 'C01';
@@ -125,7 +130,7 @@ function detail(a: Action): string {
 }
 
 function UndoList() {
-  const { actions } = useStore();
+  const { actions, game } = useStore();
   const recent = actions.map((a, i) => ({ a, i })).slice(1).slice(-14).reverse();
   return (
     <div className="undo-list">
@@ -135,7 +140,12 @@ function UndoList() {
           <div key={i} className="undo-row">
             <span className="undo-row__n num">{i}</span>
             {art ? <Art id={art} alt="" className="undo-row__art" /> : <span className="undo-row__art" />}
-            <span className="undo-row__label">{DESCRIBE[a.type]}</span>
+            <span className="undo-row__label">
+              {'playerId' in a && a.playerId && game.players.some((p) => p.id === a.playerId) && (
+                <Token token={getPlayer(game, a.playerId).token} size={30} />
+              )}
+              {DESCRIBE[a.type]}
+            </span>
             <span className="num undo-row__detail">{detail(a)}</span>
             <Btn tone={k === 0 ? 'navy' : 'ghost'} onClick={() => store.undo(k + 1)}>
               ↶ {k + 1}
@@ -240,15 +250,6 @@ function EditPlayer({ game }: { game: Game }) {
       <Row label="Name">
         <input className="t-input" value={name ?? p.name} maxLength={14} onChange={(e) => setName(e.target.value)}
           onBlur={() => name !== null && name.trim() && name !== p.name && set('name', name.trim())} />
-      </Row>
-      <Row label="Space">
-        <div className="t-tiles">
-          {SPACES.map((s) => (
-            <button key={s.pos} type="button" className={`t-tile${p.position === s.pos ? ' is-on' : ''}`} onClick={() => set('position', s.pos)} aria-label={s.label}>
-              <Art id={s.tile} alt="" />
-            </button>
-          ))}
-        </div>
       </Row>
       <Row label="Job">
         <div className="t-tiles t-tiles--jobs">

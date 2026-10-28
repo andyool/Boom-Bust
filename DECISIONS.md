@@ -21,7 +21,17 @@ Changes to the rules or data beyond `SPEC.md`, with the reason. The app's "About
 - the current player's turn: one big next-step button and the side actions;
 - a card per player: job, papers, KEEP cards, and the businesses they own (tap one for its deed).
 
-The engine still tracks each token's space, because landing and passing PAYDAY depend on it. The dice sheet shows the destination tile, and "Wrong space?" corrects it. X01 board art appears only on the Home screen.
+X01 board art appears only on the Home screen.
+
+**2026-10-28: no dice entry; students report only what happens.** Andreas: typing in every roll was too many taps and double handling (roll, move, then tell the iPad the same thing). Students now roll and move on the real board and touch the iPad only when something happens. This replaces SPEC 5.3 (dice sheet, NEXT) and the "current player's turn" panel above:
+- Each player card has two buttons: **LANDED** and **PAYDAY**. LANDED opens that player's sheet: the board's 40 spaces in order (one row per side, starting at its corner) and their side actions. They tap the space their piece is on, and the usual landing sheet opens (SPEC 5.4).
+- Spaces with nothing to do are greyed out: JOB CENTRE, Level 1 PARLIAMENT and the player's own businesses. Tapping a space by mistake is undone by closing its sheet or tapping BACK before choosing.
+- **PAYDAY** runs the whole Payday (SPEC 5.5) for that player. When it is DONE, their sheet opens so they can tap where they landed, and their PAYDAY is greyed out until something else happens.
+- **Doubles** only matter when looking for work, so the button appears only on that player's sheet.
+- There are no turns in the app, so anyone can report in any order, and nothing new starts while a landing or Payday is open. Side actions (Loan, Repay, Sell, Trade, Savings, Deal, Can't pay) act for the player whose sheet they came from.
+- **Game end:** the app cannot see the round finish, so in the last round an **END GAME** button appears ("Back to [Start Player]?").
+
+A typical turn went from about 6 taps (ROLL, two dice, GO, the landing choice, NEXT) to 3 for a landing that matters (LANDED, the space, the choice) and 0 for one that does not. The engine keeps the dice flow's `roll`, `moveTo` and `next` actions so saved games still replay; the UI now sends `land`, `payday` and `doubles`. The teacher menu no longer edits a token's space, because the app no longer uses it.
 
 ## Engine interpretations (small calls; flag any you disagree with)
 
@@ -33,5 +43,5 @@ The engine still tracks each token's space, because landing and passing PAYDAY d
 - **"Treasury pays X"** borrows Bonds payment by payment. This gives the same number of Bonds as borrowing for the total.
 - **Zero lines are kept** in Payday itemising (for example "Gym $0", "Projects $0") so every step shows.
 - **Budget night** (teacher menu) is Level 2 and up, because Policy cards are Level 2.
-- **Game end:** setup offers 5 Paydays *or* a timer, so choosing a timer turns the Payday ending off. When the timer reaches 0 the app sets "last round", and the game ends when the round comes back to the Start Player.
+- **Game end:** setup offers 5 Paydays *or* a timer, so choosing a timer turns the Payday ending off. When the timer reaches 0 the app sets "last round", and the table taps END GAME when the round comes back to the Start Player.
 - **Waiting for a job card after study** (`pendingUpgrade`) is implemented as specified, but cannot happen with 6 or fewer players: there are 6 cards per level and each player holds one card, so one is always free.

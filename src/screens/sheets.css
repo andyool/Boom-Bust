@@ -20,24 +20,28 @@
 .pchips__study { font-size: 18px; margin-left: -6px; }
 .pchips__keep { height: 30px; width: auto; border-radius: 3px; }
 
-/* Player sheet */
-.psheet__title { display: inline-flex; align-items: center; gap: 16px; text-transform: none; }
-.psheet { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; }
-.psheet__job { position: relative; }
-.psheet__job img { height: 380px; width: auto; border-radius: 14px; }
-.psheet__study { position: absolute; right: -14px; bottom: -14px; display: flex; gap: 4px; }
-.psheet__study img { height: 64px; width: 64px; border-radius: 50%; box-shadow: 0 0 0 3px var(--navy); }
-.psheet__side { display: flex; flex-direction: column; gap: 18px; }
-.psheet__stats { display: flex; flex-wrap: wrap; gap: 12px; }
-.stat {
-  display: grid; grid-template-columns: 56px auto; grid-template-rows: auto auto; column-gap: 10px; align-items: center;
-  padding: 8px 14px; border: 2px solid var(--navy); border-radius: var(--radius); background: #fffaf0;
+/* Player sheet: the board's 40 spaces in order, one row per side, each starting at its corner */
+.psheet { display: flex; gap: 18px; align-items: flex-start; }
+.where {
+  flex: 1;
+  min-width: 0;
+  /* Keep all four rows on screen: tiles are 5:8, so the grid is as wide as the height allows. */
+  max-width: calc((100dvh - 200px) / 6.4 * 10 + 72px);
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 8px;
 }
-.stat img { width: 56px; border-radius: 8px; grid-row: span 2; }
-.stat__label { font: 700 18px 'Poppins', sans-serif; text-transform: uppercase; opacity: 0.7; }
-.psheet__n { font-size: 34px; }
-.psheet__deeds { display: flex; flex-wrap: wrap; gap: 12px; }
-.psheet__deed { position: relative; }
-.psheet__deed img { height: 170px; width: auto; border-radius: 8px; }
-.psheet__sites { position: absolute; right: -8px; top: -8px; display: flex; gap: 2px; }
-.psheet__sites img { height: 34px; width: 34px; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.where__tile { position: relative; padding: 0; border: 0; background: none; border-radius: 6px; cursor: pointer; touch-action: manipulation; transition: transform 80ms ease; }
+.where__tile > img { width: 100%; aspect-ratio: 5 / 8; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 2px var(--navy); }
+.where__tile.is-corner > img { object-fit: contain; background: var(--cream); }
+.where__tile:active:not(:disabled) { transform: translateY(3px); }
+.where__tile:focus-visible { outline: 4px solid var(--mustard); outline-offset: 3px; }
+.where__tile:disabled { cursor: default; }
+.where__tile:disabled > img { opacity: 0.28; filter: grayscale(0.7); }
+.where__tile--payday:not(:disabled) > img { box-shadow: 0 0 0 2px var(--navy), 0 0 0 6px var(--mustard); }
+.where__owner { position: absolute; right: -7px; top: -7px; }
+.psheet__side { width: 214px; flex: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.psheet__side .btn--side { font-size: 16px; }
+.psheet__doubles { grid-column: 1 / -1; }
+.dice-pair { display: flex; gap: 6px; }
+.dice-pair svg { width: 30px; height: 30px; background: #fff; border: 2px solid var(--navy); border-radius: 7px; }

@@ -1,23 +1,23 @@
-// The main screen of the companion: the table's state on top, the current turn on the left,
-// the players on the right, and the flow sheets for the current phase. The physical board is the board.
+// The main screen of the companion: the table's state on top, a card per player, and a bar for Undo, the latest
+// money and the Record. Students roll and move on the physical board (the board is the board) and only tap a
+// player when something happens: a space with something to do, PAYDAY, or doubles while looking for work.
 import { useEffect, useRef, useState } from 'react';
-import { SPACES, currentPlayer, type GameEvent, type Transfer } from '../engine';
+import { SPACES, type GameEvent, type Transfer } from '../engine';
 import { store, useStore } from '../store';
-import { Art, Btn, Sheet, toast } from '../ui/kit';
-import { MoneyPanel } from '../ui/money';
-import { DiceSheet } from './flows/DiceSheet';
+import { Art, Btn, Sheet, Token, toast } from '../ui/kit';
+import { MoneyPanel, SettleUp } from '../ui/money';
 import { LandingSheet } from './flows/LandingSheet';
 import { Happenings } from './flows/Happenings';
 import { PaydaySheet } from './flows/PaydaySheet';
 import { RecordSheet } from './flows/RecordSheet';
 import { NewDealSheet, SavingsSheet } from './flows/ChoiceSheets';
 import { LawsSheet } from './flows/LawFlow';
-import { SideSheet, TilePicker, type SideKind } from './flows/SideSheets';
-import { PlayerSheet } from './PlayerSheet';
+import { SideSheet, type SideKind } from './flows/SideSheets';
+import { act } from './flows/common';
+import { PlayerSheet, type SideAction } from './PlayerSheet';
 import { Players } from './Players';
 import { StatusBar } from './StatusBar';
 import { TileSheet } from './TileSheet';
-import { TurnPanel, type MainButton, type SideAction } from './TurnPanel';
 import { EndGame } from './EndGame';
 import { TeacherMenu } from './TeacherMenu';
 import { useTimeLeft } from './useClock';
@@ -26,14 +26,13 @@ import './main.css';
 type Open =
   | { kind: 'business'; id: string }
   | { kind: 'player'; id: string }
-  | { kind: 'dice' }
-  | { kind: 'wrong' }
-  | { kind: 'side'; which: SideKind }
-  | { kind: 'savings' }
+  | { kind: 'side'; which: SideKind; playerId: string }
+  | { kind: 'savings'; playerId: string }
+  | { kind: 'deal'; playerId: string }
   | { kind: 'record' }
-  | { kind: 'deal' }
   | { kind: 'laws' }
   | { kind: 'teacher' }
+  | { kind: 'end' }
   | null;
 
 interface Result {
@@ -54,7 +53,8 @@ export function Main() {
   const seen = useRef(actions.length);
   const close = () => setOpen(null);
 
-  // After a forward action: show the Treasury check after Payday, or a word for a quiet landing.
+  // After a forward action: show the Treasury check after Payday, then ask where the piece landed;
+  // or a word for a quiet landing.
   useEffect(() => {
     const forward = actions.length > seen.current;
     seen.current = actions.length;
@@ -64,10 +64,11 @@ export function Main() {
       const tr = transfers.filter((t) => t.step === 'treasury');
       const built = events.find((e): e is Extract<GameEvent, { kind: 'project' }> => e.kind === 'project');
       if (tr.length) setResult({ art: built?.projectId, transfers: tr, events });
+      if (game.lastPayday) setOpen({ kind: 'player', id: game.lastPayday.playerId });
     }
     const landed = events.find((e): e is Extract<GameEvent, { kind: 'landed' }> => e.kind === 'landed');
     if (landed?.note && NOTE_TOAST[landed.note]) toast(NOTE_TOAST[landed.note]);
-  }, [actions.length, game.last, last]);
+  }, [actions.length, game.last, game.lastPayday, last]);
 
   // Timer ending: when time runs out, the round finishes and the game ends (SPEC 5.11).
   useEffect(() => {
@@ -75,27 +76,30 @@ export function Main() {
   }, [timeLeft, game.flags.lastRound, game.phase.name]);
 
   const phase = game.phase.name;
-  const flowOpen = !open && !result && hiddenAt !== actions.length && (phase === 'land' || phase === 'payday');
-  const hide = () => setHiddenAt(actions.length);
+  const busy = phase === 'land' || phase === 'payday';
+  const flowOpen = !open && !result && hiddenAt !== actions.length && busy;
+  const paidId = last?.type === 'paydayDone' ? game.lastPayday?.playerId ?? null : null;
 
-  const onAction = (a: SideAction) => {
-    if (a === 'record') return setOpen({ kind: 'record' });
-    if (a === 'savings') return setOpen({ kind: 'savings' });
-    if (a === 'deal') return setOpen({ kind: 'deal' });
-    setOpen({ kind: 'side', which: a });
+  // Closing a landing or Payday before anything is chosen drops it: the space was tapped by mistake.
+  // Once under way it only hides, and the bar's button brings it back.
+  const closeFlow = (back = false) => {
+    const now = store.get().actions;
+    const a = now[now.length - 1];
+    if (a?.type === 'land' || a?.type === 'payday') {
+      store.undo();
+      if (back) setOpen({ kind: 'player', id: a.playerId });
+    } else setHiddenAt(now.length);
   };
 
-  const next = game.players[(game.turnIndex + 1) % game.players.length];
-  const main: MainButton | null =
-    phase === 'turn'
-      ? { label: 'Roll', tone: 'teal', token: currentPlayer(game).token, onClick: () => setOpen({ kind: 'dice' }) }
-      : game.phase.name === 'land'
-        ? { label: 'Open', tone: 'mustard', art: SPACES[game.phase.pos].tile, onClick: () => setHiddenAt(null) }
-        : phase === 'payday'
-          ? { label: 'Payday', tone: 'mustard', art: 'C01', onClick: () => setHiddenAt(null) }
-          : phase === 'after'
-            ? { label: 'Next', tone: 'teal', token: next.token, onClick: () => store.dispatch({ type: 'next' }) }
-            : null;
+  const onAction = (playerId: string) => (a: SideAction) => {
+    if (a === 'savings') return setOpen({ kind: 'savings', playerId });
+    if (a === 'deal') return setOpen({ kind: 'deal', playerId });
+    setOpen({ kind: 'side', which: a, playerId });
+  };
+
+  const acting = game.players[game.turnIndex];
+  const lastMoney = last && !['setup', 'edit', 'next', 'setting'].includes(last.type) ? game.last.transfers : [];
+  const start = game.players.find((p) => p.id === game.startPlayerId);
 
   return (
     <div className="main">
@@ -103,25 +107,75 @@ export function Main() {
       {phase === 'over' ? (
         <EndGame game={game} onRecord={() => setOpen({ kind: 'record' })} />
       ) : (
-        <div className="main__body">
-          <TurnPanel game={game} main={main} last={last && !['setup', 'edit', 'next', 'setting'].includes(last.type) ? game.last.transfers : []} onAction={onAction} />
-          <Players game={game} onPlayer={(id) => setOpen({ kind: 'player', id })} onBusiness={(id) => setOpen({ kind: 'business', id })} />
-        </div>
+        <>
+          <div className="main__body">
+            <Players game={game} busy={busy} paidId={paidId} onPlayer={(id) => setOpen({ kind: 'player', id })}
+              onPayday={(id) => act({ type: 'payday', playerId: id })} onBusiness={(id) => setOpen({ kind: 'business', id })} />
+          </div>
+          <footer className="bar">
+            <Btn tone="navy" className="btn--side" disabled={actions.length <= 1} onClick={() => store.undo()}>
+              <span className="btn__glyph" aria-hidden>↶</span>
+              <span>Undo</span>
+            </Btn>
+            <div className="bar__mid">
+              {busy && !flowOpen ? (
+                <Btn tone="mustard" big wide onClick={() => (setHiddenAt(null), close())}>
+                  <Token token={acting.token} size={56} />
+                  <Art id={game.phase.name === 'land' ? SPACES[game.phase.pos].tile : 'C01'} className="bar__art" alt="" />
+                  {phase === 'payday' ? 'Payday' : 'Open'}
+                </Btn>
+              ) : lastMoney.some((t) => t.amount > 0) ? (
+                <>
+                  <span className="bar__label">Last</span>
+                  <SettleUp game={game} transfers={lastMoney} title={false} />
+                </>
+              ) : (
+                <span className="bar__hint">Landed on something? Tap your piece.</span>
+              )}
+            </div>
+            {game.flags.lastRound && (
+              <Btn tone="coral" className="btn--side" onClick={() => setOpen({ kind: 'end' })}>
+                <Art id="C03" alt="" />
+                <span>End game</span>
+              </Btn>
+            )}
+            <Btn tone="ghost" className="btn--side" onClick={() => setOpen({ kind: 'record' })}>
+              <Art id="K01" alt="" />
+              <span>Record</span>
+            </Btn>
+          </footer>
+        </>
       )}
 
-      {flowOpen && phase === 'land' && <LandingSheet game={game} onClose={hide} onWrongSpace={() => setOpen({ kind: 'wrong' })} />}
-      {flowOpen && phase === 'payday' && <PaydaySheet game={game} onClose={hide} />}
+      {flowOpen && phase === 'land' && <LandingSheet game={game} onClose={() => closeFlow()} onBack={() => closeFlow(true)} />}
+      {flowOpen && phase === 'payday' && <PaydaySheet game={game} onClose={() => closeFlow()} />}
 
       {open?.kind === 'business' && <TileSheet game={game} pos={SPACES.find((s) => s.businessId === open.id)!.pos} onClose={close} />}
-      {open?.kind === 'player' && <PlayerSheet game={game} playerId={open.id} onClose={close} />}
-      {open?.kind === 'dice' && <DiceSheet game={game} onClose={close} />}
-      {open?.kind === 'wrong' && <TilePicker game={game} onClose={close} />}
-      {open?.kind === 'side' && <SideSheet game={game} kind={open.which} onClose={close} onOpen={(k) => setOpen({ kind: 'side', which: k })} />}
-      {open?.kind === 'savings' && <SavingsSheet game={game} playerId={currentPlayer(game).id} onClose={close} />}
+      {open?.kind === 'player' && <PlayerSheet game={game} playerId={open.id} paid={paidId === open.id} onClose={close} onAction={onAction(open.id)} />}
+      {open?.kind === 'side' && (
+        <SideSheet game={game} kind={open.which} playerId={open.playerId} onClose={close} onOpen={(which, playerId) => setOpen({ kind: 'side', which, playerId })} />
+      )}
+      {open?.kind === 'savings' && <SavingsSheet game={game} playerId={open.playerId} onClose={close} />}
+      {open?.kind === 'deal' && <NewDealSheet game={game} playerId={open.playerId} onClose={close} />}
       {open?.kind === 'record' && <RecordSheet game={game} onClose={close} />}
-      {open?.kind === 'deal' && <NewDealSheet game={game} onClose={close} />}
       {open?.kind === 'laws' && <LawsSheet game={game} onClose={close} />}
       {open?.kind === 'teacher' && <TeacherMenu game={game} onClose={close} onRecord={() => setOpen({ kind: 'record' })} />}
+
+      {/* The app cannot see turns, so the table says when the last round is back to the Start Player. */}
+      {open?.kind === 'end' && start && (
+        <Sheet icon="C03" title="End game" onClose={close}
+          footer={
+            <>
+              <Btn tone="ghost" big onClick={close}>No</Btn>
+              <Btn tone="coral" big onClick={() => act({ type: 'endGame' }, close)}>Yes</Btn>
+            </>
+          }>
+          <div className="end-ask">
+            <Token token={start.token} size={120} />
+            <span className="end-ask__q">Back to {start.name}<span className="pcard__star">★</span>?</span>
+          </div>
+        </Sheet>
+      )}
 
       {result && (
         <Sheet icon="I04" title="Treasury" onClose={() => setResult(null)} footer={<Btn tone="teal" big onClick={() => setResult(null)}>Done</Btn>}>

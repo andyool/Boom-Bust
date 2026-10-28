@@ -185,8 +185,8 @@ export function DealsSheet({ game, playerId, onClose }: Props) {
 
 
 /** DEAL (Level 3): two players sign a Supply Deal between businesses in linked industries. */
-export function NewDealSheet({ game, onClose }: { game: Game; onClose: () => void }) {
-  const [a, setA] = useState<string | null>(game.players[game.turnIndex].id);
+export function NewDealSheet({ game, playerId, onClose }: { game: Game; playerId: string; onClose: () => void }) {
+  const [a, setA] = useState<string | null>(playerId);
   const [aBiz, setABiz] = useState<string | null>(null);
   const [b, setB] = useState<string | null>(null);
   const [bBiz, setBBiz] = useState<string | null>(null);
@@ -198,7 +198,7 @@ export function NewDealSheet({ game, onClose }: { game: Game; onClose: () => voi
   const left = C.supplyDealCards - game.supplyDeals.length;
   const ready = a && b && aBiz && bBiz && a !== b && left > 0;
   return (
-    <Sheet title={<Title game={game} playerId={a ?? game.players[game.turnIndex].id} icon="G05" label="Deal" />} onClose={onClose}
+    <Sheet title={<Title game={game} playerId={a ?? playerId} icon="G05" label="Deal" />} onClose={onClose}
       footer={<Btn tone="green" big disabled={!ready} onClick={() => ready && act({ type: 'deal', a: a!, aBiz: aBiz!, b: b!, bBiz: bBiz! }, onClose)}>Deal</Btn>}>
       <div className="deal">
         <div className="deal__side">

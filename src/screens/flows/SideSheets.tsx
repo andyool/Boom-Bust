@@ -1,7 +1,7 @@
-// Side actions (SPEC 5.8): LOAN, REPAY, SELL, TRADE, CAN'T PAY. Savings and Deal arrive in stage 5.
+// Side actions (SPEC 5.8): LOAN, REPAY, SELL, TRADE, CAN'T PAY, for the player whose sheet they came from.
 import { useState } from 'react';
 import {
-  BUSINESS, C, DATA, SPACES, canBorrow, currentPlayer, getPlayer, loanLimit, owned, sellValue, type Action, type Game,
+  BUSINESS, C, DATA, canBorrow, getPlayer, loanLimit, owned, sellValue, type Action, type Game,
 } from '../../engine';
 import { Art, Btn, Sheet, Token } from '../../ui/kit';
 import { PickBusiness, PickPlayer, Preview, YesNo, act } from './common';
@@ -9,23 +9,25 @@ import './flows.css';
 
 export type SideKind = 'loan' | 'repay' | 'sell' | 'trade' | 'cantPay';
 
-export function SideSheet({ game, kind, onClose, onOpen }: { game: Game; kind: SideKind; onClose: () => void; onOpen: (k: SideKind) => void }) {
+export function SideSheet({
+  game, kind, playerId, onClose, onOpen,
+}: { game: Game; kind: SideKind; playerId: string; onClose: () => void; onOpen: (k: SideKind, playerId: string) => void }) {
   switch (kind) {
     case 'loan':
-      return <LoanSheet game={game} onClose={onClose} />;
+      return <LoanSheet game={game} pid={playerId} onClose={onClose} />;
     case 'repay':
-      return <RepaySheet game={game} onClose={onClose} />;
+      return <RepaySheet game={game} pid={playerId} onClose={onClose} />;
     case 'sell':
-      return <SellSheet game={game} onClose={onClose} />;
+      return <SellSheet game={game} pid={playerId} onClose={onClose} />;
     case 'trade':
-      return <TradeSheet game={game} onClose={onClose} />;
+      return <TradeSheet game={game} pid={playerId} onClose={onClose} />;
     case 'cantPay':
-      return <CantPaySheet game={game} onClose={onClose} onOpen={onOpen} />;
+      return <CantPaySheet game={game} pid={playerId} onClose={onClose} onOpen={onOpen} />;
   }
 }
 
-function Title({ game, icon, label, pid }: { game: Game; icon: string; label: string; pid?: string }) {
-  const p = pid ? getPlayer(game, pid) : currentPlayer(game);
+function Title({ game, icon, label, pid }: { game: Game; icon: string; label: string; pid: string }) {
+  const p = getPlayer(game, pid);
   return (
     <span className="flow-title">
       <Token token={p.token} size={52} current />
@@ -35,13 +37,14 @@ function Title({ game, icon, label, pid }: { game: Game; icon: string; label: st
   );
 }
 
-function LoanSheet({ game, onClose }: { game: Game; onClose: () => void }) {
-  const p = currentPlayer(game);
+function LoanSheet({ game, pid, onClose }: { game: Game; pid: string; onClose: () => void }) {
+  const p = getPlayer(game, pid);
   const can = canBorrow(game, p.id);
   const limit = loanLimit(game, p.id);
+  const action: Action = { type: 'loan', playerId: p.id };
   return (
-    <Sheet title={<Title game={game} icon="G01" label="Loan" />} onClose={onClose}
-      footer={<Btn tone="green" big disabled={!can.ok} onClick={() => act({ type: 'loan' }, onClose)}>Loan</Btn>}>
+    <Sheet title={<Title game={game} icon="G01" label="Loan" pid={p.id} />} onClose={onClose}
+      footer={<Btn tone="green" big disabled={!can.ok} onClick={() => act(action, onClose)}>Loan</Btn>}>
       <div className="flow-row">
         <Art id="G01" size="lg" className="flow-card" alt="Loan" />
         <div className="flow-col flow-col--center">
@@ -52,7 +55,7 @@ function LoanSheet({ game, onClose }: { game: Game; onClose: () => void }) {
             <span className="num limit__n">{p.loans} / {limit}</span>
           </div>
           {can.ok ? (
-            <Preview game={game} action={{ type: 'loan' }} focus={p.id} />
+            <Preview game={game} action={action} focus={p.id} />
           ) : (
             <span className="question__q">
               <Art id={can.why === 'noNewLoans' ? 'N11' : can.why === 'bankrupt' ? 'G04' : 'G01'} alt="" />
@@ -65,24 +68,25 @@ function LoanSheet({ game, onClose }: { game: Game; onClose: () => void }) {
   );
 }
 
-function RepaySheet({ game, onClose }: { game: Game; onClose: () => void }) {
-  const p = currentPlayer(game);
+function RepaySheet({ game, pid, onClose }: { game: Game; pid: string; onClose: () => void }) {
+  const p = getPlayer(game, pid);
+  const action: Action = { type: 'repay', playerId: p.id };
   return (
-    <Sheet title={<Title game={game} icon="G01" label="Repay" />} onClose={onClose}
-      footer={<Btn tone="coral" big disabled={p.loans < 1} onClick={() => act({ type: 'repay' }, onClose)}>Repay</Btn>}>
+    <Sheet title={<Title game={game} icon="G01" label="Repay" pid={p.id} />} onClose={onClose}
+      footer={<Btn tone="coral" big disabled={p.loans < 1} onClick={() => act(action, onClose)}>Repay</Btn>}>
       <div className="flow-row">
         <Art id="G01" size="lg" className="flow-card" alt="Loan" />
         <div className="flow-col flow-col--center">
           <span className="num limit__n">×{p.loans}</span>
-          {p.loans > 0 && <Preview game={game} action={{ type: 'repay' }} focus={p.id} />}
+          {p.loans > 0 && <Preview game={game} action={action} focus={p.id} />}
         </div>
       </div>
     </Sheet>
   );
 }
 
-function SellSheet({ game, onClose, pid }: { game: Game; onClose: () => void; pid?: string }) {
-  const p = pid ? getPlayer(game, pid) : currentPlayer(game);
+function SellSheet({ game, onClose, pid }: { game: Game; onClose: () => void; pid: string }) {
+  const p = getPlayer(game, pid);
   const [biz, setBiz] = useState<string | null>(null);
   const ids = owned(game, p.id).map((h) => h.businessId);
   return (
@@ -101,13 +105,13 @@ function SellSheet({ game, onClose, pid }: { game: Game; onClose: () => void; pi
   );
 }
 
-function TradeSheet({ game, onClose }: { game: Game; onClose: () => void }) {
+function TradeSheet({ game, pid, onClose }: { game: Game; pid: string; onClose: () => void }) {
   const [biz, setBiz] = useState<string | null>(null);
   const [to, setTo] = useState<string | null>(null);
   const ids = DATA.businesses.filter((b) => game.holdings[b.id].ownerId).map((b) => b.id);
   const owner = biz ? game.holdings[biz].ownerId : null;
   return (
-    <Sheet title={<Title game={game} icon="K06" label="Trade" />} onClose={onClose}
+    <Sheet title={<Title game={game} icon="K06" label="Trade" pid={pid} />} onClose={onClose}
       footer={<Btn tone="teal" big disabled={!biz || !to} onClick={() => biz && to && act({ type: 'trade', businessId: biz, toPlayerId: to }, onClose)}>Trade</Btn>}>
       <div className="flow-col">
         {ids.length ? <PickBusiness ids={ids} value={biz} onPick={(id) => (setBiz(id), setTo(null))} /> : <span className="tag">—</span>}
@@ -124,8 +128,10 @@ function TradeSheet({ game, onClose }: { game: Game; onClose: () => void }) {
 }
 
 /** CAN'T PAY (SPEC 7.11): ways to raise cash, then PAID or STILL CAN'T. */
-function CantPaySheet({ game, onClose, onOpen }: { game: Game; onClose: () => void; onOpen: (k: SideKind) => void }) {
-  const [pid, setPid] = useState(currentPlayer(game).id);
+function CantPaySheet({
+  game, pid: first, onClose, onOpen,
+}: { game: Game; pid: string; onClose: () => void; onOpen: (k: SideKind, playerId: string) => void }) {
+  const [pid, setPid] = useState(first);
   const [sure, setSure] = useState<boolean | undefined>();
   const [sell, setSell] = useState(false);
   const p = getPlayer(game, pid);
@@ -147,7 +153,7 @@ function CantPaySheet({ game, onClose, onOpen }: { game: Game; onClose: () => vo
           <Btn tone="ghost" big disabled={!owned(game, pid).length} onClick={() => setSell(true)}>
             <Art id="I06" alt="" />Sell
           </Btn>
-          <Btn tone="ghost" big disabled={pid !== currentPlayer(game).id || !canBorrow(game, pid).ok} onClick={() => onOpen('loan')}>
+          <Btn tone="ghost" big disabled={!canBorrow(game, pid).ok} onClick={() => onOpen('loan', pid)}>
             <Art id="G01" alt="" />Loan
           </Btn>
           {game.level >= 2 && (
@@ -188,23 +194,6 @@ function CantPaySheet({ game, onClose, onOpen }: { game: Game; onClose: () => vo
             <Preview game={game} action={action} focus={pid} />
           </div>
         )}
-      </div>
-    </Sheet>
-  );
-}
-
-/** "Wrong space?": tap the tile the token is really on. */
-export function TilePicker({ game, onClose }: { game: Game; onClose: () => void }) {
-  const p = currentPlayer(game);
-  return (
-    <Sheet title={<span className="flow-title"><Token token={p.token} size={52} current />Wrong space?</span>} onClose={onClose}>
-      <div className="tile-grid">
-        {SPACES.map((s) => (
-          <button key={s.pos} type="button" className={`tile-grid__tile${s.pos === p.position ? ' is-on' : ''}${s.side === 'corner' ? ' is-corner' : ''}`}
-            onClick={() => act({ type: 'moveTo', pos: s.pos }, onClose)} aria-label={s.label}>
-            <Art id={s.tile} alt="" />
-          </button>
-        ))}
       </div>
     </Sheet>
   );

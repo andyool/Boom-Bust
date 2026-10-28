@@ -148,7 +148,7 @@ export function PaydaySheet({ game, onClose }: { game: Game; onClose: () => void
       {sub === 'news' && <NewsPicker game={game} onClose={closeSub} />}
       {sub === 'site' && <SiteSheet game={game} playerId={p.id} onClose={closeSub} />}
       {sub === 'study' && <StudySheet game={game} playerId={p.id} onClose={closeSub} />}
-      {(sub === 'loan' || sub === 'repay') && <SideSheet game={game} kind={sub} onClose={closeSub} onOpen={() => {}} />}
+      {(sub === 'loan' || sub === 'repay') && <SideSheet game={game} kind={sub} playerId={p.id} onClose={closeSub} onOpen={() => {}} />}
       {sub === 'savings' && <SavingsSheet game={game} playerId={p.id} onClose={closeSub} />}
       {sub === 'clips' && <ClipsSheet game={game} playerId={p.id} onClose={closeSub} />}
       {sub === 'deals' && <DealsSheet game={game} playerId={p.id} onClose={closeSub} />}
